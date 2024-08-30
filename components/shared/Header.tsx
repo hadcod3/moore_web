@@ -33,13 +33,7 @@ const Header = () => {
                 </SignedIn>
                 <SignedOut>
                     <Button asChild className="rounded-full bg-primary-400 hover:bg-primary-500 transition-colors duration-200 ease-in-out" size="lg">
-                        <Link href="/sign-in">
-
-                            LOGIN
-
-                            Login
-
-                        </Link>
+                        <Link href="/sign-in">Login</Link>
                     </Button>
                 </SignedOut>
             </div>
