@@ -1,0 +1,38 @@
+// === PACKET LIST
+# Classic Pergola
+Classic Pergola adalah struktur taman yang elegan dan serbaguna, sering digunakan untuk menciptakan area teduh atau jalur yang indah di halaman rumah. Terbuat dari kayu atau bahan lainnya, pergola ini ditandai dengan balok horizontal yang ditopang oleh kolom-kolom kokoh. Desainnya yang klasik menambah estetika serta nilai fungsional, memberikan nuansa klasik sekaligus modern pada ruang luar.
+4500000
+# Nature Pergola
+Nature Pergola adalah struktur taman yang terbuat dari bahan alami, seperti kayu atau bambu, yang berfungsi sebagai peneduh dan elemen estetika. Dirancang untuk mendukung tanaman merambat, pergola ini menciptakan ruang teduh yang sejuk dan nyaman, menggabungkan keindahan alam dengan fungsionalitas. Ideal untuk taman atau halaman belakang, Nature Pergola menawarkan sentuhan alami yang memikat.
+150000
+# Wedding Table of Ceremony
+Wedding Table of Ceremony adalah pusat keindahan dalam pernikahan, dihiasi dengan bunga-bunga segar, lilin, dan hiasan elegan. Meja ini menampilkan dekorasi yang mencerminkan tema dan warna acara, menciptakan suasana sakral dan romantis. Di sinilah pasangan mengucapkan janji suci mereka, diiringi oleh saksi dan tamu yang turut merasakan keagungan momen tersebut.
+890000
+
+// === PRODUCT LIST
+# Candle Holder
+Candle holder adalah wadah atau tempat yang dirancang untuk menahan lilin agar tetap tegak dan aman saat menyala. Terbuat dari berbagai bahan seperti logam, kaca, keramik, atau kayu, candle holder tidak hanya berfungsi praktis tetapi juga estetis, memperindah ruangan dengan desain dan bentuk yang beragam, serta menciptakan suasana yang hangat dan menenangkan.
+# Coffee and Tea Bottle
+Coffee and Tea Bottle adalah inovasi modern yang memadukan kemudahan dan gaya dalam menikmati minuman favorit. Dirancang dengan bahan berkualitas tinggi dan teknologi isolasi canggih, botol ini menjaga suhu minuman panas atau dingin lebih lama. Praktis untuk dibawa ke mana saja, Coffee and Tea Bottle cocok untuk berbagai aktivitas, dari bekerja hingga berolahraga, sambil tetap ramah lingkungan.
+# Coffee Jar
+Coffee jar sebagai souvenir pernikahan adalah pilihan yang elegan dan fungsional. Dengan desain yang dapat disesuaikan, coffee jar ini tidak hanya memberikan sentuhan personal, tetapi juga kenangan manis bagi para tamu. Setiap kali menikmati kopi, mereka akan mengingat momen spesial tersebut, menjadikan coffee jar sebagai simbol kehangatan dan kebersamaan yang abadi.
+# Honey Jar
+Honey jar sebagai souvenir pernikahan adalah pilihan yang manis dan simbolis. Madu melambangkan kemanisan dan keabadian cinta, menjadikannya kenang-kenangan yang penuh makna bagi para tamu. Dikemas dalam botol kecil yang cantik dengan label personalisasi, honey jar menambah sentuhan elegan dan alami pada perayaan, mengingatkan semua orang akan momen bahagia yang telah dibagikan.
+# Jefe Flower
+Jefe Flower menawarkan buket bunga pernikahan yang elegan dan mempesona, dirancang khusus untuk momen istimewa Anda. Dengan kombinasi bunga segar yang indah dan pengaturan yang artistik, buket ini mencerminkan cinta dan keindahan. Setiap detail diperhatikan dengan cermat untuk menciptakan buket yang sempurna, menambah sentuhan magis pada hari bahagia Anda.
+
+// === GEAR LIST
+# 360 Photobooth
+360 Photobooth adalah inovasi menarik dalam dunia fotografi pernikahan yang memberikan pengalaman yang tak terlupakan bagi para tamu. Dengan teknologi canggih, para pengantin dan tamu dapat mengabadikan momen spesial mereka dari setiap sudut dengan hasil foto 360 derajat yang spektakuler. Melalui fitur interaktif ini, mereka dapat berbagi kebahagiaan mereka secara langsung melalui media sosial dan menciptakan kenangan yang abadi dari hari bahagia mereka bersama.
+
+# Chafing Dish
+Chafing dish adalah alat yang tak tergantikan dalam acara pernikahan. Dengan kemampuannya menjaga makanan tetap hangat, chafing dish memberikan kenyamanan kepada tamu dengan menyajikan hidangan yang tetap segar dan lezat sepanjang acara. Keindahan dan kepraktisan chafing dish juga membuatnya menjadi pilihan utama dalam menyajikan hidangan pesta pernikahan yang elegan dan berkesan.
+
+# Misty Fan
+Misty Fan merupakan alat pendukung yang sempurna untuk acara pernikahan, memberikan sentuhan elegan dan romantis. Dengan lembutnya kabut yang dihasilkan, menciptakan suasana magis di sekitar pengantin, menambahkan nuansa misteri dan keindahan. Setiap langkah mereka menjadi seperti mimpi yang terwujud di tengah gemerlap cahaya.
+
+# Roll Top
+Roll top, sebuah inovasi praktis yang mengubah suasana acara pernikahan dengan sentuhan elegan dan efisien. Dengan kemampuannya yang dapat disesuaikan, roll top menjadi alat yang sempurna untuk menyajikan hidangan dalam pesta pernikahan, memastikan tampilan yang rapi dan mengesankan bagi para tamu. Dengan gaya yang fleksibel dan fungsional, roll top memberikan kemudahan bagi pengantin dan penyelenggara acara dalam menyajikan hidangan dengan sentuhan profesional dan harmonis.
+
+# Stand Frame
+Stand frame merupakan salah satu alat pendukung yang sering digunakan dalam acara pernikahan. Dengan desain yang elegan dan indah, stand frame menjadi tempat ideal untuk menampilkan foto-foto kenangan pasangan pengantin. Melalui stand frame, momen-momen manis dan berharga dari perjalanan cinta mereka dapat dipamerkan dengan anggun, memberikan sentuhan emosional yang mendalam bagi para tamu undangan yang hadir.
