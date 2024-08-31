@@ -208,11 +208,11 @@ body {
 
   /* SHADCN OVERRIDES */
   .select-field {
-    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
-  }
+    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
+  } 
 
   .input-field {
-    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
+    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
   } 
 
   .textarea {

@@ -109,7 +109,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> 
           <FormField
             control={form.control}
             name="categoryId"
@@ -129,7 +129,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem className="w-full border border-primary-100 rounded-2xl">
+                <FormItem className="w-full border-primary-100 rounded-2xl">
                   <FormControl className="h-72">
                     <Textarea placeholder="Description" {...field} className="textarea rounded-2xl resize-none" />
                   </FormControl>
@@ -141,7 +141,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
-                <FormItem className="w-full border border-primary-100 rounded-2xl">
+                <FormItem className="w-full border-primary-100 rounded-2xl">
                   <FormControl className="h-72 ">
                     <FileUploader 
                       onFieldChange={field.onChange}
@@ -162,7 +162,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-primary-100/20 border border-primary-100 px-4 py-2">
+                    <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-primary-100/0 border border-b-2 border-primary-100 px-4 py-2">
                       <Image
                         src="/assets/icons/dollar.svg"
                         alt="dollar"
@@ -170,7 +170,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
                         height={24}
                         className="filter-grey"
                       />
-                      <Input type="number" placeholder="Price" {...field} className="bg-transparent border-transparent h-[54px]placeholder:text-primary-500 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0" />
+                      <Input type="number" placeholder="Price" {...field} className="bg-transparent border-transparent h-[54px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0" />
                     </div>
 
                   </FormControl>
@@ -184,7 +184,7 @@ const PacketForm = ({ userId, type, packet, packetId }: PacketFormProps) => {
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full bg-primary-400"
+          className="button col-span-2 w-full bg-primary-400 text-white"
         >
           {form.formState.isSubmitting ? (
             'Submitting...'

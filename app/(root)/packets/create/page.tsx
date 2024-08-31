@@ -14,17 +14,10 @@ const CreatePacket = () => {
  
     return (
         <>
-            <section className="bg-primary-100/30 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
+            <section className="bg-grey-100 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
                 <div className="wrapper flex items-center justify-center sm:justify-between">
                     <h3 className='h3-bold text-center sm:text-left text-primary-500'>Create Packet</h3>
                     <Button size="lg" className="button-ic">
-                        <Image
-                            src="/assets/icons/left_arrow.svg"
-                            alt="back"
-                            width={24}
-                            height={24}
-                            className="filter-grey"
-                        />
                         <Link href="/profile">
                             Back
                         </Link>

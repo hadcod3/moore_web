@@ -49,7 +49,7 @@ const PacketCategoryFilter = () => {
 
     return (
         <Select onValueChange={(value: string) => onSelectCategory(value)} >
-            <SelectTrigger className="select-field ">
+            <SelectTrigger className="select-field">
                 <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>

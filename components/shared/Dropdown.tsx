@@ -86,8 +86,8 @@ const Dropdown = ({ value, onChangeHandler, collectionTypes }: DropdownProps) =>
     return (
 
         <Select onValueChange={onChangeHandler} defaultValue={value}>
-            <SelectTrigger className="select-field">
-            <SelectValue placeholder="Category" />
+            <SelectTrigger className="select-field bg-secondary-200">
+            <SelectValue placeholder="Category" className="text-primary-300"/>
             </SelectTrigger>
             <SelectContent>
             {categories.length > 0 && categories.map((category) => (
@@ -107,7 +107,7 @@ const Dropdown = ({ value, onChangeHandler, collectionTypes }: DropdownProps) =>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => startTransition(() => { handleAddCategory(); })} className="bg-primary-300">Add</AlertDialogAction>
+                    <AlertDialogAction onClick={() => startTransition(() => { handleAddCategory(); })} className="bg-primary-300/70 text-white hover:bg-primary-300">Add</AlertDialogAction>
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

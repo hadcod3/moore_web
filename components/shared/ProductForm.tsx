@@ -171,7 +171,7 @@ const ProductForm = ({ userId, type, productId, product }: ProductFormProps) => 
                             height={24}
                             className="filter-grey"
                         />
-                        <Input type="number" placeholder="Price" {...field} className="bg-transparent border-transparent h-[54px]placeholder:text-primary-500 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0" />
+                        <Input type="number" placeholder="Price" {...field} className="bg-transparent border-transparent h-[54px]placeholder:text-primary-500 px-5 py-3 focus-visible:ring-transparent text-md focus:ring-transparent !important focus-visible:ring-offset-0" />
 
                         </div>
 
@@ -195,7 +195,7 @@ const ProductForm = ({ userId, type, productId, product }: ProductFormProps) => 
                             height={24}
                             className="filter-grey"
                         />
-                        <Input type="number" placeholder="Stock" {...field} className="bg-transparent border-transparent h-[54px]placeholder:text-primary-500 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0" />
+                        <Input type="number" placeholder="Stock" {...field} className="bg-transparent border-transparent h-[54px]placeholder:text-primary-500 px-5 py-3 focus-visible:ring-transparent text-md focus:ring-transparent !important focus-visible:ring-offset-0" />
 
                         </div>
 
@@ -210,7 +210,7 @@ const ProductForm = ({ userId, type, productId, product }: ProductFormProps) => 
             type="submit"
             size="lg"
             disabled={form.formState.isSubmitting}
-            className="button col-span-2 w-full bg-primary-400"
+            className="button text-white col-span-2 w-full bg-primary-400"
             >
             {form.formState.isSubmitting ? (
                 'Submitting...'
