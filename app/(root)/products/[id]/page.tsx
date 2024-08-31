@@ -48,7 +48,7 @@ const ProductDetails = async ({ params: { id }, searchParams }: SearchParamProps
                             <h2 className='font-medium text-[24px] text-secondary-300'>{product.title}</h2>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                                 <div className="flex gap-3">
-                                    <p className="text-[32px] font-bold text-primary-400 font-aleo">Rp {parseInt(product.price).toLocaleString()}</p> 
+                                    <p className="text-[32px] font-bold text-secondary-400 font-aleo">Rp {parseInt(product.price).toLocaleString()}</p> 
                                 </div>
                             </div>
                             <h5 className='text-base text-primary-300/70'>Stock : {product.stock}</h5>

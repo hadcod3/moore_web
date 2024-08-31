@@ -42,9 +42,9 @@ const ProductCard = ({ item, organized }: ProductProps) => {
 
             <div className="flex max-h-[130px] flex-col gap-1 p-2 md:gap-1"> 
                 <Link href={`/products/${item._id}`}>
-                    <p className="p-medium-16 line-clamp-1 flex-1 text-primary-300 capitalize">{item.title}</p>
+                    <p className="p-medium-16 line-clamp-1 flex-1 text-secondary-300 capitalize">{item.title}</p>
                 </Link>
-                <span className="font-semibold text-base text-primary-500 font-aleo">
+                <span className="font-semibold text-base text-secondary-400 font-aleo">
                     Rp {parseInt(item.price).toLocaleString()}
                 </span>
                 <div className="flex-between w-full">

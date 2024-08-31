@@ -37,32 +37,22 @@ const GearCard = ({ item, organized }: GearProps) => {
 
 
         <div className="flex max-h-[130px] flex-col gap-1 p-2 md:gap-1"> 
-            <Link href={`/gears/${item._id}`}>
-                <p className="p-medium-16 line-clamp-1 flex-1 text-primary-400">{item.title}</p>
-            </Link>
 
-            <span className="font-semibold text-primary-500">
-                Rp {parseInt(item.price).toLocaleString()}
-            </span>
-            <p className="p-medium-14 md:p-medium-16 text-primary-500">
-            {item.organizer.firstName} {item.organizer.lastName}
-            </p>
+            {organized === false && (
+                <LikeButton/>
+            ) }
 
-        {organized === false && (
-            <LikeButton/>
-        ) }
+            <div className="flex max-h-[130px] flex-col gap-1 p-2 md:gap-1"> 
+                <Link href={`/gears/${item._id}`}>
+                    <p className="p-medium-16 line-clamp-1 flex-1 text-secondary-300 capitalize">{item.title}</p>
+                </Link>
 
-        <div className="flex max-h-[130px] flex-col gap-1 p-2 md:gap-1"> 
-            <Link href={`/gears/${item._id}`}>
-                <p className="p-medium-16 line-clamp-1 flex-1 text-primary-300 capitalize">{item.title}</p>
-            </Link>
-
-            <span className="font-semibold text-primary-500 font-aleo">
-                Rp {parseInt(item.price).toLocaleString()}
-            </span>
-            <p className="p-medium-14 text-primary-200">
-                Stock: {item.stock}
-            </p>
+                <span className="font-semibold text-secondary-400 font-aleo">
+                    Rp {parseInt(item.price).toLocaleString()}
+                </span>
+                <p className="p-medium-14 text-primary-200">
+                    Stock: {item.stock}
+                </p>
             </div>
         </div>
         </div>
