@@ -14,15 +14,12 @@ import { Input } from "../ui/input";
 import { startTransition, useState } from "react";
 import { Toaster } from "../ui/toaster";
 import { useToast } from "../ui/use-toast";
-import { createVendorPermit } from "@/lib/actions/vendor.actions";
-import { IVendorPermit } from "@/lib/database/models/vendor.model";
 
 type VerificationProps = {
     userId: string
 }
 
 const VerificationButton = ({ userId } : VerificationProps ) => {
-    const [permits, setPermits] = useState<IVendorPermit[]>([]);
     const { toast } = useToast()
 
     const formatDateTime = (date: Date): string => {

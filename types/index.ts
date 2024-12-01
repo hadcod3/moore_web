@@ -47,7 +47,7 @@ export type CreateVendorCategoryParams = {
 export type CheckoutOrderParams = {
     itemTitle: string
     itemId: string
-    price: string
+    price: number
     buyerId: string
     amount: number
 }
@@ -282,4 +282,25 @@ export type CreateVendorPermitParams = {
     _id: string
     isVendor: boolean
 
+}
+
+// ==========================================================================
+
+export type GetItemsByTypeIdParams = {
+    typeId: string;
+    query: string;
+    category: string;
+    limit: number;
+    page: number;
+}
+// export type GetAllPacketsParams = {
+//     query: string
+//     category: string
+//     limit: number
+//     page: number
+// }
+
+export type GetOrdersByItemParams = {
+    eventId: string
+    searchString: string
 }

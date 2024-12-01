@@ -1,35 +1,38 @@
-import PacketCategoryFilter from "@/components/shared/PacketCategoryFilter"
-import PacketCollection from "@/components/shared/PacketCollection"
+
+import Collection from "@/components/shared/Collection"
+import CategoryFilter from "@/components/shared/CategoryFilter"
 import Search from "@/components/shared/Search"
-import { getAllPackets } from "@/lib/actions/packet.actions"
+import { getItemsByTypeId } from "@/lib/actions/item.actions"
 import { SearchParamProps } from "@/types"
  
 const Packets = async ({ searchParams }: SearchParamProps) => {
     const page = Number(searchParams?.page) || 1;
     const searchText = (searchParams?.query as string) || '';
     const category = (searchParams?.category as string) || '';
+    const packetTypeId = "6717aa0a78fed7ee045a8402" // ID of packet type
     
-    const packets = await getAllPackets({
+    const packets = await getItemsByTypeId({
+        typeId: packetTypeId,
         query: searchText,
         category,
         page,
-        limit: 15 
+        limit: 9
     })
 
     return (
         <>
             <section className="wrapper my-8 flex flex-col md:gap-12">
-                <h2 className="h2-bold font-playfair text-primary-500">Trusted by <br/> Thousands of Customers</h2>
                 <div className="flex w-full flex-col gap-5 py-5 md:flex-row">
                     <Search placeholder="Search"/>
-                    <PacketCategoryFilter/>
+                    <CategoryFilter typeId={packetTypeId}/>
                 </div>
-                <PacketCollection
+                <Collection
                 data={packets?.data}
                 emptyTitle="No Packets Found"
                 emptyStateSubtext="Check later"
-                collectionType="All_Packets"
-                limit={15}
+                collectionType="Packet"
+                collectionModel="Full_Content"
+                limit={9}
                 page={page}
                 totalPages={packets?.totalPages}
                 />

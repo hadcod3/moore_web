@@ -1,13 +1,13 @@
-import { IVendor } from '@/lib/database/models/user.model'
+
 import React from 'react'
-import PacketCard from './PacketCard'
 import Pagination from './Pagination'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import VendorCard from './VendorCard'
+import { IUser } from '@/lib/database/models/user.model'
 
 type VendorCollectionProps = {
-  data: IVendor[],
+  data: IUser[],
   emptyTitle: string,
   emptyStateSubtext: string,
   limit: number,
@@ -34,7 +34,7 @@ const VendorCollection = ({
                         {data.map((item) => {
                             return (
                                 <li key={item._id} className="flex justify-center">
-                                    <VendorCard vendorAva={item.photo} vendorName={item.username}/>
+                                    <VendorCard data={item}/>
                                 </li>
                             )
                         })}

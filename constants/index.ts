@@ -77,31 +77,16 @@ export const imageList = [
     },
 ]
   
-export const packetDefaultValues = {
-    title: '',
-    description: '',
-    location: '',
-    imageUrl: '',
-    categoryId: '',
-    price: '',
-    isFree: true,
-    url: '',
-}
-
-export const productDefaultValues = {
-    title: '',
+export const itemDefaultValues = {
+    type: '',
+    name: '',
     description: '',
     imageUrl: '',
-    price: '',
-    stock: '',
-}
-
-export const gearDefaultValues = {
-    title: '',
-    description: '',
-    imageUrl: '',
-    price: '',
-    stock: '',
+    price: 0,
+    stock: 0,
+    minOrder: 0,
+    category: '',
+    organizer: ''
 }
 
 

@@ -5,10 +5,8 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import Checkout from './Checkout'
-import { IPacket } from '@/lib/database/models/packet.model';
-import { IProduct } from '@/lib/database/models/product.model';
-import { IGear } from '@/lib/database/models/gear.model';
 import Image from 'next/image'
+import { IItem } from '@/lib/database/models/item.model'
 
 type ButtonProps = {
     buttonType?: 'Packet' | 'Product' | 'Gear';
@@ -19,7 +17,7 @@ const AddToCartButton = (
         value, buttonType, amount 
     } : { 
         buttonType: ButtonProps['buttonType'], 
-        value: IPacket | IProduct | IGear, 
+        value: IItem, 
         amount: number
     }) => {
 

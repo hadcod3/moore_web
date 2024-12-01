@@ -5,112 +5,53 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { startTransition, useEffect, useState } from "react"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Input } from "../ui/input"
-import { IPacketCategory, IProductCategory, IGearCategory } from "@/lib/database/models/category.model"
-import { createPacketCategory, getAllPacketCategories } from "@/lib/actions/category.actions"
-import { createProductCategory, getAllProductCategories } from "@/lib/actions/category.actions"
-import { createGearCategory, getAllGearCategories } from "@/lib/actions/category.actions"
+import { useEffect, useState } from "react"
+import { getCategoryByType } from "@/lib/actions/category.actions";
+import { IItemCategory } from "@/lib/database/models/itemCategory.model"
 
 
 type DropdownProps = {
-    value?: string
+    value: string
     onChangeHandler?: () => void
-    collectionTypes?: 'Packet_Categories' | 'Product_Categories' | 'Gear_Categories'
+    typeFor: string | undefined
 }
   
-const Dropdown = ({ value, onChangeHandler, collectionTypes }: DropdownProps) => {
-    const [categories, setCategories] = useState<(IPacketCategory | IProductCategory | IGearCategory)[]>([]);
-    const [newCategory, setNewCategory] = useState('');
-
-    const handleAddCategory = async () => {
-        try {
-          let category: IPacketCategory | IProductCategory | IGearCategory;
-          switch (collectionTypes) {
-            case 'Packet_Categories':
-              category = await createPacketCategory({ packetCategoryName: newCategory.trim() });
-              break;
-            case 'Product_Categories':
-              category = await createProductCategory({ productCategoryName: newCategory.trim() });
-              break;
-            case 'Gear_Categories':
-              category = await createGearCategory({ gearCategoryName: newCategory.trim() });
-              break;
-            default:
-              throw new Error('Invalid collection type');
-          }
-          setCategories(prevState => [...prevState, category]);
-        } catch (error) {
-          console.error('Error adding category:', error);
-        }
-    };
+const Dropdown = ({ value, onChangeHandler, typeFor }: DropdownProps) => {
+    const [categories, setCategories] = useState<IItemCategory[]>([]);
     
+    if(!typeFor){
+        console.log("Error fetching categories")
+    }
+
     useEffect(() => {
-        if (collectionTypes) {
-          const fetchCategories = async () => {
-            try {
-              let categoryList;
-              switch (collectionTypes) {
-                case 'Packet_Categories':
-                  categoryList = await getAllPacketCategories();
-                  break;
-                case 'Product_Categories':
-                  categoryList = await getAllProductCategories();
-                  break;
-                case 'Gear_Categories':
-                  categoryList = await getAllGearCategories();
-                  break;
-                default:
-                  throw new Error('Invalid collection type');
-              }
-              setCategories(categoryList);
-            } catch (error) {
-              console.error('Error fetching categories:', error);
-            }
-          };
-          fetchCategories();
+      const fetchCategories = async () => {
+        try {
+          const data = await getCategoryByType(typeFor as string);
+          setCategories(data);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
         }
-      }, [collectionTypes]);
+      };
+      fetchCategories();
+    }, [typeFor]);
+    
   
     return (
 
         <Select onValueChange={onChangeHandler} defaultValue={value}>
             <SelectTrigger className="select-field bg-secondary-200">
-            <SelectValue placeholder="Category" className="text-primary-300"/>
+              {categories.length > 0 ? (
+                <SelectValue placeholder="Category" className="text-primary-300"/>
+              ) : (
+                <SelectValue placeholder="Set Type First" className="text-primary-300"/>
+              )}
             </SelectTrigger>
             <SelectContent>
             {categories.length > 0 && categories.map((category) => (
                 <SelectItem key={category._id} value={category._id} className="select-item p-regular-14">
-                {category.name}
+                {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
                 </SelectItem>
             ))}
-    
-            <AlertDialog>
-                <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-100 focus:text-primary-500">Add new category</AlertDialogTrigger>
-                <AlertDialogContent className="bg-white">
-                <AlertDialogHeader>
-                    <AlertDialogTitle>New Category</AlertDialogTitle>
-                    <AlertDialogDescription>
-                    <Input type="text" placeholder="Category name" className="input-field mt-3" onChange={(e) => setNewCategory(e.target.value)} />
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => startTransition(() => { handleAddCategory(); })} className="bg-primary-300/70 text-white hover:bg-primary-300">Add</AlertDialogAction>
-                </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
             </SelectContent>
         </Select>
 

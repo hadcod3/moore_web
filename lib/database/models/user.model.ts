@@ -1,9 +1,16 @@
 import { Document, Schema, model, models } from "mongoose";
 
-export interface IVendor extends Document {
-    clerkId: string;
-    username: string;
-    photo: string;
+export interface IUser extends Document {
+    _id: string,
+    clerkId: string,
+    email: string,
+    username: string,
+    firstName: string,
+    lastName: string,
+    photo: string,
+    address: string,
+    city: string,
+    isVendor: boolean
 }
 
 const UserSchema = new Schema({
@@ -12,12 +19,11 @@ const UserSchema = new Schema({
     username: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    photo: { type: String, required: true },
-    created_at: { type: Date, required: true},
-    updated_at: { type: Date, required: true},
+    photo: { type: String, required: false },
+    address: { type: String, required: false },
+    city: { type: String, required: false },
     isVendor: { type: Boolean, required: true, default: false}
 })
 
-const User = models.User || model('User', UserSchema);
-
-export default User;
+const User = models.User || model("User", UserSchema);
+export default User

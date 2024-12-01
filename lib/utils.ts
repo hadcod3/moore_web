@@ -1,58 +1,46 @@
+
 import { type ClassValue, clsx } from 'clsx'
 
 import { twMerge } from 'tailwind-merge'
 import qs from 'query-string'
 
 import { UrlQueryParams, RemoveUrlQueryParams } from '@/types'
+import { getItemsByOrganizerId } from './actions/item.actions'
+import { auth } from '@clerk/nextjs'
+import { useEffect } from 'react'
+import { getNotificationByToId } from './actions/notification.actions'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const formatDateTime = (dateString: Date) => {
-  const dateTimeOptions: Intl.DateTimeFormatOptions = {
-    weekday: 'short', // abbreviated weekday name (e.g., 'Mon')
-    month: 'short', // abbreviated month name (e.g., 'Oct')
-    day: 'numeric', // numeric day of the month (e.g., '25')
-    hour: 'numeric', // numeric hour (e.g., '8')
-    minute: 'numeric', // numeric minute (e.g., '30')
-    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
-  }
-
   const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: 'short', // abbreviated weekday name (e.g., 'Mon')
-    month: 'short', // abbreviated month name (e.g., 'Oct')
-    year: 'numeric', // numeric year (e.g., '2023')
-    day: 'numeric', // numeric day of the month (e.g., '25')
-  }
+    day: '2-digit', // ensures the day is always two digits (e.g., '12')
+    month: 'short', // abbreviated month name (e.g., 'Jan')
+    year: 'numeric', // numeric year (e.g., '2024')
+  };
 
   const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: 'numeric', // numeric hour (e.g., '8')
-    minute: 'numeric', // numeric minute (e.g., '30')
-    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
-  }
+    hour: 'numeric', // numeric hour (e.g., '10')
+    minute: '2-digit', // ensures minutes are always two digits (e.g., '10')
+    hour12: true, // use 12-hour clock (e.g., 'PM')
+  };
 
-  const formattedDateTime: string = new Date(dateString).toLocaleString('en-US', dateTimeOptions)
+  const formattedDate = new Date(dateString).toLocaleDateString('en-US', dateOptions); // e.g., "12 Jan 2024"
+  const formattedTime = new Date(dateString).toLocaleTimeString('en-US', timeOptions); // e.g., "10:10 PM"
 
-  const formattedDate: string = new Date(dateString).toLocaleString('en-US', dateOptions)
-
-  const formattedTime: string = new Date(dateString).toLocaleString('en-US', timeOptions)
-
-  return {
-    dateTime: formattedDateTime,
-    dateOnly: formattedDate,
-    timeOnly: formattedTime,
-  }
-}
+  // Combine the formatted date and time with the desired separator
+  return `${formattedDate} • ${formattedTime}`;
+};
 
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file)
 
-export const formatPrice = (price: string) => {
-  const amount = parseFloat(price)
+export const formatPrice = (price: number) => {
   const formattedPrice = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
-  }).format(amount)
+  }).format(price)
 
   return formattedPrice
 }

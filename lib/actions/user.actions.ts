@@ -4,21 +4,9 @@ import { revalidatePath } from 'next/cache'
 import { connectToDatabase } from '@/lib/database'
 import User from '@/lib/database/models/user.model'
 import Order from '@/lib/database/models/order.model'
-import Event from '@/lib/database/models/packet.model'
 import { handleError } from '@/lib/utils'
 import { CreateUserParams, GetAllUsersAsVendorsParams, UpdateUserParams } from '@/types'
-import { VendorCategory } from '../database/models/category.model'
-import Packet from '@/lib/database/models/packet.model'
-// import Vendor from '../database/models/vendor.model'
-
-const getCategoryByName = async (name: string) => {
-    return VendorCategory.findOne({ name: { $regex: name, $options: 'i' } })
-} 
-
-const populateVendor = (query: any) => {
-    return query
-    .populate({ path: 'category', model: VendorCategory, select: '_id name' })
-}
+import Item from '../database/models/item.model'
 
 
 export async function createUser(user: CreateUserParams) {
@@ -32,18 +20,6 @@ export async function createUser(user: CreateUserParams) {
   }
 }
 
-export async function getUserById(userId: string) {
-  try {
-    await connectToDatabase()
-
-    const user = await User.findById(userId)
-
-    if (!user) throw new Error('User not found')
-    return JSON.parse(JSON.stringify(user))
-  } catch (error) {
-    handleError(error)
-  }
-}
 
 export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
@@ -72,7 +48,7 @@ export async function deleteUser(clerkId: string) {
     // Unlink relationships
     await Promise.all([
       // Update the 'events' collection to remove references to the user
-      Packet.updateMany(
+      Item.updateMany(
 
         { _id: { $in: userToDelete.events } },
         { $pull: { organizer: userToDelete._id } }
@@ -93,32 +69,46 @@ export async function deleteUser(clerkId: string) {
 
 }
 
-// GET ALL USERS AS VENDORS
-export async function getAllVendors({ query, limit = 30, category, page }: GetAllUsersAsVendorsParams) {
-    try {
-      await connectToDatabase()
-  
-      const usernameCondition = query ? { username: { $regex: query, $options: 'i' } } : {}
-      const categoryCondition = category ? await getCategoryByName(category) : null
-      const conditions = {
-        $and: [usernameCondition, categoryCondition ? { category: categoryCondition._id } : {}],
-      }
 
-      const skipAmount = (Number(page) - 1) * limit
-      const vendorsQuery = User.find(conditions)
-        .sort({ createdAt: 'desc' })
-        .skip(skipAmount)
-        .limit(limit)
+// Get All Vendors
+export async function getAllVendors() {
+  try {
+    await connectToDatabase();
 
-      const vendors = await populateVendor(vendorsQuery)
-      const vendorsCount = await User.countDocuments(conditions)
-  
-      return {
-        data: JSON.parse(JSON.stringify(vendors)),
-        totalPages: Math.ceil(vendorsCount / limit),
-      }
-    } catch (error) {
-      handleError(error)
-    }
+    const users = await User.find({isVendor : true});
+
+    if (!users) throw new Error('No users found');
+    return JSON.parse(JSON.stringify(users));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+// Get User by Clerk Id
+export const getUserByClerkId = async (clerkId: string) => {
+  try {
+    await connectToDatabase()
+
+    const user = await User.findById(clerkId)
+
+    if (!user) throw new Error('User not found')
+    return JSON.parse(JSON.stringify(user))
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+// Get User by id
+export async function getUserById(_id: string) {
+  try {
+    await connectToDatabase()
+
+    const user = await User.findById(_id)
+
+    if (!user) throw new Error('User not found')
+    return JSON.parse(JSON.stringify(user))
+  } catch (error) {
+    handleError(error)
+  }
 }
 

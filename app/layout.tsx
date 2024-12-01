@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-
 import { Poppins, Playfair_Display, Aleo } from "next/font/google";
-
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
@@ -17,17 +15,14 @@ const playfair = Playfair_Display({
     variable: '--font-playfair_display'
 });
 
-
-
 const aleo = Aleo({ 
     subsets: ["latin"],
     weight: ["400", "500", "600", "700", "800", "900"],
     variable: '--font-aleo'
 });
 
-
 export const metadata: Metadata = {
-    title: "Had Wedding",
+    title: "Moore",
     description: "A wedding organizer agency",
     icons: {
         icon: '/favicon.ico',

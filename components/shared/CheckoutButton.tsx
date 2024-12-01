@@ -5,12 +5,10 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import Checkout from './Checkout'
-import { IPacket } from '@/lib/database/models/packet.model';
-import { IProduct } from '@/lib/database/models/product.model';
-import { IGear } from '@/lib/database/models/gear.model';
+import { IItem } from '@/lib/database/models/item.model'
 
 type ButtonProps = {
-    buttonType?: 'Packet' | 'Product' | 'Gear';
+    buttonType?: 'Rent' | 'Buy';
 }
 
 const CheckoutButton = (
@@ -18,12 +16,8 @@ const CheckoutButton = (
         value, buttonType, amount 
     } : { 
         buttonType: ButtonProps['buttonType'], 
-        value: IPacket | IProduct | IGear, 
+        value: IItem, 
         amount: number
-
-    // packet: IPacket 
-
-
     }) => {
 
     const { user } = useUser();
@@ -41,20 +35,7 @@ const CheckoutButton = (
                 </SignedOut>
 
                 <SignedIn>
-                    {/* <Checkout value={value} userId={userId} /> */}
-                    {buttonType === 'Packet' && (
-                        <Checkout value={value as IPacket} userId={userId} isRent={true} amount={amount}/>
-                    )}
-                    {buttonType === 'Product' && (
-                        <Checkout value={value as IProduct} userId={userId} isRent={false} amount={amount}/>
-                    )}
-                    {buttonType === 'Gear' && (
-
-                        // <Checkout value={value as IGear} userId={userId} isRent={true} amount={amount}/>
-
-                        <Checkout value={value as IGear} userId={userId} isRent={false} amount={amount}/>
-
-                    )}
+                    <Checkout value={value as IItem} userId={userId} isRent={true} amount={amount}/>
                 </SignedIn>
             </>
         </div>

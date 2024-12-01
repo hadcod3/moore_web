@@ -1,18 +1,18 @@
 "use server"
 
 import Stripe from 'stripe';
-import { CheckoutOrderParams, CreateOrderParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
+import { CheckoutOrderParams, CreateOrderParams, GetOrdersByItemParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
 import { redirect } from 'next/navigation';
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
 import Order from '../database/models/order.model';
 import User from '../database/models/user.model';
-import Packet from '../database/models/packet.model';
 import {ObjectId} from 'mongodb';
+import Item from '../database/models/item.model';
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-    const price = Number(order.price) * 100;
+    const price = order.price * 100;
   
     try {
         const session = await stripe.checkout.sessions.create({
@@ -61,7 +61,7 @@ export const createOrder = async (order: CreateOrderParams) => {
 }
   
 // GET ORDERS BY EVENT
-export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByPacketParams) {
+export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByItemParams) {
     try {
       await connectToDatabase()
   
@@ -124,14 +124,14 @@ export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByPac
       const skipAmount = (Number(page) - 1) * limit
       const conditions = { buyer: userId }
   
-      const orders = await Order.distinct('packet._id')
+      const orders = await Order.distinct('items._id')
         .find(conditions)
         .sort({ createdAt: 'desc' })
         .skip(skipAmount)
         .limit(limit)
         .populate({
-          path: 'packet',
-          model: Packet,
+          path: 'item',
+          model: Item,
           populate: {
             path: 'organizer',
             model: User,

@@ -1,11 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { getAllPackets } from "@/lib/actions/packet.actions";
 import { SearchParamProps } from '@/types';
 import Image from "next/image";
 import Link from "next/link";
-import PacketCollection from "@/components/shared/PacketCollection";
-import { getAllProducts } from "@/lib/actions/product.actions";
-import { getAllGears } from "@/lib/actions/gear.actions";
 import {
     Accordion,
     AccordionContent,
@@ -13,27 +9,33 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { faqList } from "@/constants";
-import ProductCollection from "@/components/shared/ProductCollection";
-import GearCollection from "@/components/shared/GearCollection";
+import { getItemsByTypeId } from "@/lib/actions/item.actions";
+import Collection from "@/components/shared/Collection";
   
 export default async function Home({ searchParams }: SearchParamProps) {
     const page = Number(searchParams?.page) || 1;
     const searchText = (searchParams?.query as string) || '';
     const category = (searchParams?.category as string) || '';
+    const packetTypeId = "6717aa0a78fed7ee045a8402" // ID of packet type
+    const productTypeId = "6717aa0a78fed7ee045a8403" // ID of product type
+    const gearTypeId = "6717aa0a78fed7ee045a8401" // ID of gear type
 
-    const packets = await getAllPackets({
+    const packets = await getItemsByTypeId({
+        typeId: packetTypeId,
         query: searchText,
         category,
         page,
         limit: 3
     })
-    const products = await getAllProducts({
+    const products = await getItemsByTypeId({
+        typeId: productTypeId,
         query: searchText,
         category,
         page,
         limit: 5
     })
-    const gears = await getAllGears({
+    const gears = await getItemsByTypeId({
+        typeId: gearTypeId,
         query: searchText,
         category,
         page,
@@ -49,7 +51,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
                         <h1 className="h1-bold text-secondary-300 font-playfair" data-aos="fade-right">
                             Make your dream wedding come true with us!
                         </h1>
-                        <p className="p-regular-20 md:p-regular-24 text-primary-300" data-aos="fade-right" data-aos-delay="150">
+                        <p className="font-poppins p-regular-20 md:p-regular-24 text-primary-300" data-aos="fade-right" data-aos-delay="150">
                         Find a wedding organizer vendor that suits your dream wedding event without having to think about unnecessary things
                         </p>
                         <Button size="lg" asChild className="button w-full sm:w-fit bg-primary-300 text-white font-black" data-aos="fade-right" data-aos-anchor-placement="bottom-bottom" data-aos-delay="300">
@@ -82,11 +84,12 @@ export default async function Home({ searchParams }: SearchParamProps) {
             {/* PACKETS DISPLAY SECTION */}
             <section id="packets" className="wrapper my-8 flex flex-col gap-5 md:gap-12">
                 <h2 className="h2-bold text-center text-secondary-300 font-playfair">Trusted by <br/> Thousands of Customers</h2>
-                <PacketCollection
+                <Collection
                 data={packets?.data}
                 emptyTitle="No Packets Found"
                 emptyStateSubtext="Check later"
-                collectionType="Sample_Packets"
+                collectionType="Packet"
+                collectionModel="Sample"
                 limit={3}
                 page={page}
                 totalPages={packets?.totalPages}
@@ -94,7 +97,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
             </section>
         
             {/* MILESTONE */}
-
             <section className="relative flex items-center justify-center flex-col gap-y-7 bg-grey-100 py-14 md:py-10 overflow-hidden" id="about">
                 <div className="relative sm:absolute" data-aos="fade-up">
                     {/* Border Center Image */}
@@ -165,28 +167,27 @@ export default async function Home({ searchParams }: SearchParamProps) {
             {/* PRODUCTS DISPLAY SECTION */}
             <section className="wrapper my-8 flex flex-col gap-5 md:gap-12">
                 <h2 className="h2-bold text-center text-secondary-300 font-playfair">~ Products ~</h2>
-
-                <ProductCollection
+                <Collection
                 data={products?.data}
                 emptyTitle="No Products Found"
                 emptyStateSubtext="Check later"
-                collectionType="Sample_Products"
-                limit={3}
+                collectionType="Product"
+                collectionModel="Sample"
+                limit={5}
                 page={page}
                 totalPages={products?.totalPages}
                 />
             </section>
 
             {/* GEARS DISPLAY SECTION */}
-
             <section className="wrapper my-8 flex flex-col gap-5 md:gap-12">
                 <h2 className="h2-bold text-center text-secondary-300 font-playfair">~ Gears ~</h2>
-
-                <GearCollection
+                <Collection
                 data={gears?.data}
                 emptyTitle="No Gears Found"
                 emptyStateSubtext="Check later"
-                collectionType="Sample_Gears"
+                collectionType="Gear"
+                collectionModel="Sample"
                 limit={5}
                 page={page}
                 totalPages={gears?.totalPages}
