@@ -83,6 +83,32 @@ body {
     hue-rotate(32deg) brightness(98%) contrast(92%);
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.modal-content {
+  transform: translateY(100%); /* Initially position the modal off-screen */
+  animation: slideUp 0.5s ease-out forwards; /* Slide-up animation */
+}
+
+/* Keyframes for the slide-up animation */
+@keyframes slideUp {
+  from {
+      transform: translateY(100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
 /*  TAILWIND STYLES */
 @layer utilities {
   .hide-scrollbar::-webkit-scrollbar {

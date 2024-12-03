@@ -85,11 +85,11 @@ export async function getAllVendors() {
 }
 
 // Get User by Clerk Id
-export const getUserByClerkId = async (clerkId: string) => {
+export async function getUserByClerkId(clerkId: string) {
   try {
     await connectToDatabase()
 
-    const user = await User.findById(clerkId)
+    const user = await User.findOne({clerkId})
 
     if (!user) throw new Error('User not found')
     return JSON.parse(JSON.stringify(user))

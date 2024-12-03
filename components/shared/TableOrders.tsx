@@ -3,19 +3,21 @@ import React from 'react'
 import TableItem from './TableItem'
 import { TableCell, TableRow } from '../ui/table'
 import { ITransaction } from '@/lib/database/models/transaction.model'
+import { ICart } from '@/lib/database/models/cart.model'
+import { IItem } from '@/lib/database/models/item.model'
 
 type CollectionProps = {
-    data: ITransaction[],
+    data: ITransaction[] | IOrder[] ,
     emptyTitle: string,
     emptyStateSubtext: string,
-    isTransaction: boolean
+    model: "Transaction" | "Order"
 }
 
 const TableOrders = ({
     data,
     emptyTitle,
     emptyStateSubtext,
-    isTransaction
+    model
   }: CollectionProps) => {
     return (
         <>
@@ -23,7 +25,7 @@ const TableOrders = ({
                 <>
                     {data.map((item) => {
                         return (
-                            <TableItem key={item._id} transaction={item} isTransaction={isTransaction}/>
+                            <TableItem key={item._id} data={item} model={model}/>
                         )
                     })}
                 </>

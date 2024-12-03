@@ -6,9 +6,10 @@ import ItemCategory from '../database/models/itemCategory.model';
 import ItemType from '../database/models/itemType.model';
 import User from '../database/models/user.model';
 import { GetItemsByTypeIdParams } from '@/types';
-import { getCategoryById, getCategoryByName } from './category.actions';
+import { getCategoryByName } from './category.actions';
 import { revalidatePath } from 'next/cache';
 import { handleError } from '../utils';
+import Cart from '../database/models/cart.model';
 
 const populateItem = (query: any) => {
   return query
@@ -237,3 +238,57 @@ export async function deleteItem({ id, path }: DeleteItemParams) {
   }
 }
 
+
+
+type CreateCartParams = {
+  buyerId: string, 
+  quantity: number,
+  totalAmount: number,
+  itemId: string, 
+  vendorId: string,
+}
+
+export async function checkItemInCart(buyerId: string, itemId: string) {
+  try {
+    await connectToDatabase();
+
+    const existingCartItem = await Cart.findOne({
+      buyer: buyerId,
+      items: itemId,
+    });
+
+    return existingCartItem; 
+  } catch (error) {
+    handleError(error);
+    return null;
+  }
+}
+
+export async function addItemToCart({buyerId, quantity, totalAmount, itemId, vendorId} : CreateCartParams)  {
+  try {
+    await connectToDatabase()
+
+    const newCart = await Cart.create({ 
+      buyer: buyerId,
+      quantity,
+      totalAmount,
+      items: itemId,
+      vendor: vendorId,
+    })
+
+    return JSON.parse(JSON.stringify(newCart))
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+// DELETE
+export async function deleteCartItem({ id }: {id: string}) {
+    try {
+      await connectToDatabase()
+  
+      const deletedItem = await Cart.findByIdAndDelete(id)
+    } catch (error) {
+      handleError(error)
+    }
+}

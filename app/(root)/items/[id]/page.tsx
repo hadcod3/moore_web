@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import VendorCard from '@/components/shared/VendorCard';
 import { getItemById } from '@/lib/actions/item.actions';
 
-const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
-    const item = (await getItemById(id)) || null;
+const ItemDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
+    const item = await getItemById(id);
     // const relatedPackets = await getRelatedPacketsByCategory({
     //     categoryId: packet.category._id,
     //     packetId: packet._id,
@@ -57,10 +57,8 @@ const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps
                                 </div>
                             </div>
 
-                            {!isOrganizer && item.type === "6717aa0a78fed7ee045a8403" ? (
-                                <CheckoutButton value={item} buttonType="Buy" amount={item.minOrder}/>
-                            ) : (
-                                <CheckoutButton value={item} buttonType="Rent" amount={item.minOrder}/>
+                            {!isOrganizer && (
+                                <CheckoutButton value={item}/>
                             )}
 
                             <div className="flex flex-col gap-1">
@@ -71,23 +69,9 @@ const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps
                         </div>
                     </div>
                 </section>
-
-                {/* items with the same category */}
-                {/* <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
-                    <h2 className="h2-bold text-secondary-300">Related Packets</h2>
-                    <PacketCollection 
-                        data={relatedPackets?.data}
-                        emptyTitle="No Packets Found"
-                        emptyStateSubtext="Come back later"
-                        collectionType="All_Packets"
-                        limit={3}
-                        page={searchParams.page as string}
-                        totalPages={relatedPackets?.totalPages}
-                    />
-                </section> */}
             </div>
         </>
     )
 }
 
-export default PackageDetails
+export default ItemDetails

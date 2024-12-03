@@ -1,58 +1,71 @@
-import React from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+'use client';
+
+import React, { useState } from 'react';
+import { FiMinus, FiPlus } from 'react-icons/fi';
+import { Button } from '../ui/button';
 
 interface CounterProps {
   initialCount: number;
   onChange: (value: number) => void;
-  minOrder: number; 
-  maxOrder: number; 
+  minOrder: number;
+  maxOrder: number;
 }
 
-const Counter = ({ initialCount, onChange, minOrder, maxOrder } : CounterProps) => {
-  const isMinDisabled = initialCount === minOrder; 
-  const isMaxDisabled = initialCount === maxOrder; 
+const Counter = ({ initialCount, onChange, minOrder, maxOrder }: CounterProps) => {
+  const [count, setCount] = useState(initialCount);
 
-  // Handle input change
+  const handleIncrement = () => {
+    const newCount = Math.min(maxOrder, count + 1);
+    setCount(newCount);
+    onChange(newCount);
+  };
+
+  const handleDecrement = () => {
+    const newCount = Math.max(minOrder, count - 1);
+    setCount(newCount);
+    onChange(newCount);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numericValue = parseInt(e.target.value, 10);
     if (!isNaN(numericValue)) {
-      onChange(numericValue);
-    } else if (e.target.value === "") {
-      onChange(0); 
+      const clampedValue = Math.max(minOrder, Math.min(maxOrder, numericValue));
+      setCount(clampedValue);
+      onChange(clampedValue);
     }
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="flex items-center border border-gray-200 rounded-lg bg-gray-50 ">
+      <div className="flex items-center border border-gray-200 rounded-lg bg-gray-50">
         <Button
-          onClick={() => onChange(Math.max(minOrder, initialCount - 1))} // Ensure count doesn't go below minOrder
-          disabled={isMinDisabled} // Disable button if at minimum
-          className={`p-3 ${isMinDisabled ? "text-gray-300" : "text-black"}`}
+          onClick={handleDecrement}
+          disabled={count === minOrder}
+          className={`p-3 ${count === minOrder ? 'text-gray-300' : 'text-black'}`}
         >
-          <FiMinus size={20}/>
+          <FiMinus size={20} />
         </Button>
         <div className="h-8 border-r border-gray-200"></div>
-        <div className="w-10 flex self-center items-center justify-center">
-          {/* <input
+        <div className="w-20 flex self-center items-center justify-center">
+          <input
             type="number"
-            value={5}
+            value={count}
             onChange={handleInputChange}
-            className="w-16 bg-transparent pl-[14px]"
-            disabled
-          /> */}
-          {/* <Input type="number" className="bg-transparent border-transparent" /> */}
-          {minOrder}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                e.preventDefault();
+              }
+            }}
+            className="w-16 bg-transparent text-center outline-none border-none appearance-none"
+          />
         </div>
         <div className="h-8 border-l border-gray-200"></div>
         <Button
-          onClick={() => onChange(Math.min(maxOrder, initialCount + 1))} // Ensure count doesn't exceed maxOrder
-          disabled={isMaxDisabled} // Disable button if at maximum
-          className={`p-3 ${isMaxDisabled ? "text-gray-300" : "text-black"}`}
+          onClick={handleIncrement}
+          disabled={count === maxOrder}
+          className={`p-3 ${count === maxOrder ? 'text-gray-300' : 'text-black'}`}
         >
-          <FiPlus size={20}/>
+          <FiPlus size={20} />
         </Button>
       </div>
     </div>

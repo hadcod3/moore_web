@@ -46,7 +46,7 @@ const TransactionScreen = async () => {
                         data={transactionData}
                         emptyTitle="No Orders Found"
                         emptyStateSubtext="Check later"
-                        isTransaction={false}
+                        model="Order"
                         />
                     </TableBody>
                 </Table>
