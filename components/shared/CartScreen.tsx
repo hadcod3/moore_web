@@ -353,6 +353,7 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                     <form action={onCheckout} method='post'>
                         <Button
                             type='submit'
+                            role="link"
                             className="w-full rounded-lg border border-gray-200 bg-white"
                             disabled={updatedCartContent.filter(cartItem => selectedItems[cartItem._id]).length === 0}
                         >
