@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -17,19 +17,30 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import Counter from './Counter';
 import { IUser } from '@/lib/database/models/user.model';
-import { deleteCartItem } from '@/lib/actions/item.actions';
+import { deleteCartItem, getItemById } from '@/lib/actions/item.actions';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import { addressShippingEditSchema } from '@/lib/validator';
+import { loadStripe } from '@stripe/stripe-js';
+import { checkoutOrder } from '@/lib/actions/order.actions';
+import { CreateCheckoutParams, CreateOrderParams } from '@/types';
+
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemDetails: any }>, buyer: IUser }) => {
     const [showModal, setShowModal] = useState(false);
+    const [addressShipping, setAddressShipping] = useState(buyer.address);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tempAddress, setTempAddress] = useState(buyer.address);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
     const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
         cartContent.reduce((acc, item) => {
             acc[item._id] = false;
             return acc;
         }, {} as Record<string, boolean>)
     );
+    console.log(selectedItems)
 
     const [updatedCartContent, setUpdatedCartContent] = useState(cartContent);
 
@@ -104,6 +115,81 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
         .reduce((total, cartItem) => total + cartItem.itemDetails.price * cartItem.quantity, 0);
     const shipmentCost = subtotal * 0.1;
     const grandTotal = subtotal + shipmentCost;
+
+    const handleEditAddress = () => {
+        setIsModalOpen(true);
+    };
+  
+    const handleSaveAddress = () => {
+        try {
+            addressShippingEditSchema.parse({ addressShipping: tempAddress });
+            setAddressShipping(tempAddress); 
+            setIsModalOpen(false);
+            toast.success('Shipping address updated successfully!',{position: "bottom-right",});
+        } catch (error: any) {
+            toast.error(error.errors[0]?.message || 'Invalid address',{position: "bottom-right",});
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setTempAddress(addressShipping);
+        setIsModalOpen(false);
+    };
+
+    
+    useEffect(() => {
+        // Check to see if this is a redirect back from Checkout
+        const query = new URLSearchParams(window.location.search);
+        if (query.get('success')) {
+          console.log('Order placed! You will receive an email confirmation.');
+        }
+    
+        if (query.get('canceled')) {
+          console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+        }
+    }, []);
+
+    const onCheckout = async () => {
+
+        const selectedCartItems = updatedCartContent.filter(
+            (cartItem) => selectedItems[cartItem._id]
+        );
+    
+        if (selectedCartItems.length === 0) {
+            toast.error("Please select items to checkout.");
+            return;
+        }
+
+        const order = {
+            buyer: buyer._id, 
+            itemsOrder: selectedCartItems.map((item) => ({
+                _id: item.itemDetails._id,
+                name: item.itemDetails.name,
+                totalAmountPerItem: item.quantity * item.totalAmount
+            })),
+            shipmentCost, 
+            shippingAddress: addressShipping, 
+            createdAt: new Date(),
+            forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // Current time + 2 days for Product
+        };
+    
+        try {
+            await checkoutOrder(order); 
+            console.log(order,"checkout order")
+            toast.success('Checkout Success!', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.error('Error during checkout:', error); 
+        }
+    };
 
     return (
         <div className="wrapper flex flex-row justify-between">
@@ -226,10 +312,11 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                             <Input
                                 type="text"
                                 placeholder="Add shipping address"
-                                defaultValue={buyer.address}
+                                disabled
+                                value={addressShipping}
                                 className="w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0"
                             />
-                            <Button className="h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300">
+                            <Button onClick={handleEditAddress} className="h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300">
                                 <Image
                                     src={'/assets/icons/edit_bw.svg'}
                                     alt="edit"
@@ -263,12 +350,15 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                             Rp{grandTotal.toLocaleString('id-ID')}
                         </p>
                     </div>
-                    <Button
-                        className="w-full rounded-lg border border-gray-200 bg-white"
-                        disabled={updatedCartContent.filter(cartItem => selectedItems[cartItem._id]).length === 0}
-                    >
-                        Continue to payment
-                    </Button>
+                    <form action={onCheckout} method='post'>
+                        <Button
+                            type='submit'
+                            className="w-full rounded-lg border border-gray-200 bg-white"
+                            disabled={updatedCartContent.filter(cartItem => selectedItems[cartItem._id]).length === 0}
+                        >
+                            Continue to payment
+                        </Button>
+                    </form>
                 </div>
             </section>
             {/* PAYMENT SECTION END */}
@@ -285,7 +375,32 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                 </div>
             )}
 
-            <ToastContainer />
+            {/* EDIT SHIPPING ADDRESS MODAL START */}
+            {isModalOpen && (
+                <div className='fixed top-0 left-0 w-full h-full bg-black/30 flex items-center justify-center'>
+                    <div className='bg-white p-4 rounded-2xl border-gray-300 flex flex-col gap-y-4'>
+                        <h1>Edit Shipping Address</h1>
+                        <div className=''>
+                            <Input
+                                type='text'
+                                value={tempAddress}
+                                onChange={(e) => setTempAddress(e.target.value)}
+                                placeholder='Enter new shipping address'
+                                className='bg-white border-gray-200 rounded-lg w-80 h-[50px] text-md px-5 py-3 outline-none focus-visible:ring-transparent focus:ring-transparent !important'
+                            />
+                        </div>
+                        <div className='w-full flex justify-between'>
+                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] bg-red-600 text-white'>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300'>
+                                Save
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* EDIT SHIPPING ADDRESS MODAL END */}
 
         </div>
     );

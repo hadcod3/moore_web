@@ -3,14 +3,38 @@
 import { connectToDatabase } from '@/lib/database'  
 import User from '../database/models/user.model'
 import Item from '../database/models/item.model'
-import Transaction from '../database/models/transaction.model'
+import Transaction, { ITransaction } from '../database/models/transaction.model'
 
 const populateItem = (query: any) => {
     return query
     .populate({ path: 'buyer', model: User, select: '_id firstName lastName' })
     .populate({ path: 'items', model: Item, select: '_id name' })
 }
-  
+
+export async function createTransactions(transactionsData: Omit<ITransaction, '_id' | 'createdAt' | 'updatedAt'>[]) {
+  try {
+    // Connect to the database
+    await connectToDatabase();
+
+    // Create transactions in the database
+    const createdTransactions = await Transaction.insertMany(
+      transactionsData.map((transaction) => ({
+        ...transaction,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }))
+    );
+
+    // Return the created transactions
+    return JSON.parse(JSON.stringify(createdTransactions));
+  } catch (error) {
+    console.error('Error creating transactions:', error);
+    if (error instanceof Error) {
+      console.error(error.stack); // Log detailed error stack for further insights
+    }
+    throw new Error('Failed to create transactions');
+  }
+}
 
 // GET ALL ITEMS
 export async function getAllTransactions() {

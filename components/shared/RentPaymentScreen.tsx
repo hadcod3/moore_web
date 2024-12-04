@@ -21,16 +21,24 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import { createTransactions } from '@/lib/actions/transaction.actions';
+import { ITransaction } from '@/lib/database/models/transaction.model';
+import { useRouter } from 'next/navigation';
+import { addressShippingEditSchema } from '@/lib/validator';
 
 const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
+    const router = useRouter();
     const [forDate, setForDate] = React.useState<Date>()
     const [quantity, setQuantity] = useState(item.minOrder);
     const [subtotal, setSubtotal] = useState(0);
     const [shipmentCost, setShipmentCost] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
     const dateInputRef = useRef<HTMLInputElement | null>(null);
+    const [addressShipping, setAddressShipping] = useState(buyer.address);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tempAddress, setTempAddress] = useState(buyer.address);
 
     useEffect(() => {
         const calculatedSubtotal = item.price * quantity;
@@ -45,6 +53,62 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
     const checkFunction = (itemId: string, value: number) => {
         console.log(`Updating item ${itemId} quantity to ${value}`);
         setQuantity(value);
+    };
+
+    const handleEditAddress = () => {
+        setIsModalOpen(true);
+    };
+
+  
+    const handleSaveAddress = () => {
+        try {
+            addressShippingEditSchema.parse({ addressShipping: tempAddress });
+            setAddressShipping(tempAddress); 
+            setIsModalOpen(false);
+            toast.success('Shipping address updated successfully!',{position: "bottom-right",});
+        } catch (error: any) {
+            toast.error(error.errors[0]?.message || 'Invalid address',{position: "bottom-right",});
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setTempAddress(addressShipping);
+        setIsModalOpen(false);
+    };
+
+    const handleCreateTransaction = async () => {
+        if (!forDate) {
+            toast.error('Please select a date for the rental.',{position: "bottom-right",});
+            return;
+        }
+    
+        if (!addressShipping) {
+            toast.error('Please provide a shipping address.',{position: "bottom-right",});
+            return;
+        }
+
+        try {
+            const transactionData = {
+                paymentId: undefined,
+                buyer: buyer._id,
+                items: item._id,
+                quantity,
+                price: item.price,
+                totalAmount: grandTotal,
+                shippingAddress: buyer.address,
+                status: 'under consideration',
+                forDate,
+            };
+
+            const createdTransaction = await createTransactions([transactionData] as any);
+            toast.success('Transaction created successfully!');
+            console.log('Created transaction:', createdTransaction);
+        } catch (error) {
+            console.error('Error creating transaction:', error);
+            toast.error('Failed to create transaction. Please try again.');
+        }
+
+        router.push("/profile")
     };
 
     return (
@@ -157,8 +221,8 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                     <div className='flex flex-col gap-1'>
                         <h1 className='text-lg font-semibold'>Shipping Address</h1>
                         <div className='flex gap-2'>
-                            <Input type='text' placeholder='Add shipping address' defaultValue={buyer.address} className='w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0'/>
-                            <Button className='h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300'>
+                            <Input type='text' disabled placeholder='Add shipping address' value={addressShipping} className='w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0'/>
+                            <Button onClick={handleEditAddress} className='h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300'>
                                 <Image
                                     src={"/assets/icons/edit_bw.svg"}
                                     alt="edit"
@@ -188,12 +252,42 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                         <p className='text-gray-400'>Grand total</p>
                         <p className='font-semibold'>Rp{grandTotal.toLocaleString('id-ID')}</p>
                     </div>
-                    <Button className='w-full rounded-lg border border-gray-200 bg-white'>
+                    <Button
+                        className='w-full rounded-lg border border-gray-200 bg-white'
+                        onClick={handleCreateTransaction}
+                    >
                         Make Request
                     </Button>
                 </div>
             </section>
             {/* PAYMENT SECTION END */}
+
+            {/* EDIT SHIPPING ADDRESS MODAL START */}
+            {isModalOpen && (
+                <div className='fixed top-0 left-0 w-full h-full bg-black/30 flex items-center justify-center'>
+                    <div className='bg-white p-4 rounded-2xl border-gray-300 flex flex-col gap-y-4'>
+                        <h1>Edit Shipping Address</h1>
+                        <div className=''>
+                            <Input
+                                type='text'
+                                value={tempAddress}
+                                onChange={(e) => setTempAddress(e.target.value)}
+                                placeholder='Enter new shipping address'
+                                className='bg-white border-gray-200 rounded-lg w-80 h-[50px] text-md px-5 py-3 outline-none focus-visible:ring-transparent focus:ring-transparent !important'
+                            />
+                        </div>
+                        <div className='w-full flex justify-between'>
+                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] bg-red-600 text-white'>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300'>
+                                Save
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* EDIT SHIPPING ADDRESS MODAL END */}
         </div>
     )
 };

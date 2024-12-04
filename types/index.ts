@@ -1,3 +1,5 @@
+import { IItem } from "@/lib/database/models/item.model"
+
 // ====== USER PARAMS
 export type CreateUserParams = {
     clerkId: string
@@ -44,19 +46,26 @@ export type CreateVendorCategoryParams = {
     vendorCategoryName: string
 }
 // ====== ORDER PARAMS
-export type CheckoutOrderParams = {
-    itemTitle: string
-    itemId: string
-    price: number
-    buyerId: string
-    amount: number
+export type CreateCheckoutParams = {
+    buyer: string;
+    itemsOrder: {
+        _id: string
+        name: string
+        totalAmountPerItem: number
+    }[];
+    shipmentCost: number;
+    shippingAddress: string;
+    createdAt: Date;
+    forDate: Date;
 }
 export type CreateOrderParams = {
-    stripeId: string
-    itemId: string
-    buyerId: string
-    totalAmount: string
-    createdAt: Date
+    stripeId: string;
+    buyer: string;
+    itemsOrder: {_id: string}[];
+    totalAmount: number;
+    shippingAddress: string;
+    createdAt: Date;
+    forDate: Date;
 }
 export type GetOrdersByPacketParams = {
     eventId: string

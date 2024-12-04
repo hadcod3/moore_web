@@ -1,7 +1,7 @@
 "use server"
 
 import Stripe from 'stripe';
-import { CheckoutOrderParams, CreateOrderParams, GetOrdersByItemParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
+import { CreateCheckoutParams, CreateOrderParams, GetOrdersByItemParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
 import { redirect } from 'next/navigation';
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
@@ -10,50 +10,59 @@ import User from '../database/models/user.model';
 import {ObjectId} from 'mongodb';
 import Item from '../database/models/item.model';
 
-export const checkoutOrder = async (order: CheckoutOrderParams) => {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-    const price = order.price * 100;
-  
-    try {
-        const session = await stripe.checkout.sessions.create({
-            line_items: [
-            {
-                price_data: {
-                currency: 'idr',
-                unit_amount: price,
-                product_data: {
-                    name: order.itemTitle
-                }
-                },
-                quantity: order.amount
+export const checkoutOrder = async (order: CreateCheckoutParams) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  // const price = order.totalAmount * 100;
+  const shipmentCost = order.shipmentCost * 100; // 10% from grand total
+
+  try {
+      // Create the checkout session
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          ...order.itemsOrder.map((item) => ({
+            price_data: {
+              currency: 'idr',
+              unit_amount: item.totalAmountPerItem,
+              product_data: {
+                name: item.name,
+              },
             },
-            ],
-            metadata: {
-                itemId: order.itemId,
-                buyerId: order.buyerId,
+            quantity: 1,
+          })),
+          {
+            price_data: {
+              currency: 'idr',
+              unit_amount: shipmentCost, 
+              product_data: {
+                name: 'Shipment Cost',
+              },
             },
-            mode: 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
-            cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
+            quantity: 1,
+          },
+        ],
+          metadata: {
+              itemId: order.itemsOrder.map((item) => item._id).join(','), // Joining item IDs as a string
+              buyerId: order.buyer.toString(),
+              shippingAddress: JSON.stringify(order.shippingAddress),
+              forDate: order.forDate.toISOString(),
+          },
+          mode: 'payment',
+          success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
+          cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
       });
-  
-      redirect(session.url!)
-    } catch (error) {
-        throw error;
-    }
-}
+
+      redirect(session.url!);
+  } catch (error) {
+      console.error('Error during checkout:', error);
+      throw error; // Rethrow error if needed
+  }
+};
 
 export const createOrder = async (order: CreateOrderParams) => {
-    console.log(order, "created")
     try {
         await connectToDatabase();
         
-        const newOrder = await Order.create({
-            ...order,
-            item: order.itemId,
-            buyer: order.buyerId,
-        });
-        
+        const newOrder = await Order.create(order);
         return JSON.parse(JSON.stringify(newOrder));
     } catch (error) {
         handleError(error);
@@ -116,33 +125,33 @@ export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByIte
     }
   }
   
-  // GET ORDERS BY USER
-  export async function getOrdersByUser({ userId, limit = 3, page }: GetOrdersByUserParams) {
-    try {
-      await connectToDatabase()
-  
-      const skipAmount = (Number(page) - 1) * limit
-      const conditions = { buyer: userId }
-  
-      const orders = await Order.distinct('items._id')
-        .find(conditions)
-        .sort({ createdAt: 'desc' })
-        .skip(skipAmount)
-        .limit(limit)
-        .populate({
-          path: 'item',
-          model: Item,
-          populate: {
-            path: 'organizer',
-            model: User,
-            select: '_id firstName lastName',
-          },
-        })
-  
-      const ordersCount = await Order.distinct('event._id').countDocuments(conditions)
-  
-      return { data: JSON.parse(JSON.stringify(orders)), totalPages: Math.ceil(ordersCount / limit) }
-    } catch (error) {
-      handleError(error)
-    }
+// GET ORDERS BY USER
+export async function getOrdersByUser({ userId, limit = 3, page }: GetOrdersByUserParams) {
+  try {
+    await connectToDatabase()
+
+    const skipAmount = (Number(page) - 1) * limit
+    const conditions = { buyer: userId }
+
+    const orders = await Order.distinct('items._id')
+      .find(conditions)
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(limit)
+      .populate({
+        path: 'item',
+        model: Item,
+        populate: {
+          path: 'organizer',
+          model: User,
+          select: '_id firstName lastName',
+        },
+      })
+
+    const ordersCount = await Order.distinct('event._id').countDocuments(conditions)
+
+    return { data: JSON.parse(JSON.stringify(orders)), totalPages: Math.ceil(ordersCount / limit) }
+  } catch (error) {
+    handleError(error)
   }
+}

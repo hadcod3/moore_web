@@ -4,6 +4,7 @@ import Header from "@/components/shared/Header";
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 import { useEffect } from "react";
+import { ToastContainer } from 'react-toastify';
 
 export default function RootLayout({
         children,
@@ -21,6 +22,7 @@ export default function RootLayout({
             <Header/>
             <main className="flex-1 pt-[75px]">{children}</main>
             <Footer/>
+            <ToastContainer/>
         </div>
     );
 }

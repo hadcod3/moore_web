@@ -9,7 +9,6 @@ export default authMiddleware({
         '/gears',
         '/vendors',
         '/profile',
-
         '/api/webhook/clerk',
         '/api/webhook/stripe',
         '/api/uploadthing'

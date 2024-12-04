@@ -11,3 +11,11 @@ export const itemFormSchema = z.object({
     minOrder: z.number().int().positive().optional(),
     category: z.string(),
 })
+
+export const addressShippingEditSchema = z.object({
+    addressShipping: z.string()
+    .min(1, 'Shipping address cannot be empty')
+    .refine((value) => !/^\d+$/.test(value), {
+        message: 'Shipping address cannot contain only numbers',
+    }),
+})
