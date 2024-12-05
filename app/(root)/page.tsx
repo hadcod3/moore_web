@@ -54,8 +54,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
                         <p className="font-poppins p-regular-20 md:p-regular-24 text-primary-300" data-aos="fade-right" data-aos-delay="150">
                         Find a wedding organizer vendor that suits your dream wedding event without having to think about unnecessary things
                         </p>
-                        <Button size="lg" asChild className="button w-full sm:w-fit bg-primary-300 text-white font-black" data-aos="fade-right" data-aos-anchor-placement="bottom-bottom" data-aos-delay="300">
-
+                        <Button size="lg" asChild className="button w-full sm:w-fit font-black" data-aos="fade-right" data-aos-anchor-placement="bottom-bottom" data-aos-delay="300">
                             <Link href="#packets">Explore Now</Link>
                         </Button>
                     </div>

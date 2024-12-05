@@ -7,14 +7,14 @@ export interface ITransaction extends Document {
     buyer: string;
     items: {
         _id: string,
-        name: string
+        name: string,
     }
     productData?: IItem;
     quantity: number;
     price: number;
     totalAmount: number;
     shippingAddress: string;
-    status: 'paid'| 'packaging'| 'shipping'| 'under consideration'| 'confirm' | 'installation'| 'rejected' | "success";
+    status: 'paid'| 'packaging'| 'shipping'| 'under consideration'| 'confirm' | 'installation' | 'rejected' | "success";
     createdAt: Date;
     updatedAt: Date;
     forDate: Date;

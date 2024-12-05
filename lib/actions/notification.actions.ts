@@ -1,7 +1,32 @@
 'use server'
 
 import { connectToDatabase } from '@/lib/database'  
-import Notification from '../database/models/notification.model'
+import Notification, { INotification } from '../database/models/notification.model'
+
+export async function createNotification(notificationData: {
+  to: string;
+  from: { _id: string; name: string; imageUrl: string };
+  message: string;
+}) {
+  try {
+    // Connect to the database
+    await connectToDatabase();
+
+    // Create the notification
+    const newNotification = await Notification.create({
+      to: notificationData.to,
+      from: notificationData.from,
+      massage: notificationData.message, 
+    });
+
+    console.log(`Notification created successfully:`, newNotification);
+
+    return JSON.parse(JSON.stringify(newNotification));
+  } catch (error) {
+    console.error('Error creating notification:', error);
+    return null;
+  }
+}
 
 // GET ALL ITEMS BY BUYER ID
 export async function getNotificationByToId(id: string) {
@@ -14,7 +39,7 @@ export async function getNotificationByToId(id: string) {
 
       // If no items are found, log and throw an error
       if (!notifications || notifications.length === 0) {
-        console.log(`No items found for buyer ID: ${id}`);
+        console.log(`No Notification found for current user ID: ${id}`);
       }
   
       // Return the items

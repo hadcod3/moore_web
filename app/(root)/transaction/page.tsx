@@ -6,6 +6,7 @@ import { getAllTransactions, getTransactionByBuyerId } from "@/lib/actions/trans
 import { getCurrentUserId } from "@/lib/utils_server"
 import Link from "next/link"
 import { useState } from "react"
+import { IoIosArrowRoundBack } from "react-icons/io"
 import { IoArrowBack } from "react-icons/io5"
 
 const TransactionScreen = async () => {
@@ -19,12 +20,10 @@ const TransactionScreen = async () => {
                 <div>
                     <h2 className="h2-bold font-playfair">Transaction</h2>
                 </div>
-                <Button size="lg" className="button-ic w-36">
-                    <IoArrowBack /> 
-                    <Link href="/profile">
-                        Back
-                    </Link>
-                </Button>
+                <Link href="/profile" className="button-ic">
+                    <IoIosArrowRoundBack size={20}/>
+                    <p>Back</p>
+                </Link>
             </div>
             <section className="wrapper mt-8">
                 <Table>

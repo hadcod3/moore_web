@@ -21,11 +21,17 @@ export async function createUser(user: CreateUserParams) {
 }
 
 
-export async function updateUser(clerkId: string, user: UpdateUserParams) {
+export async function updateUser({ data }: UpdateUserParams) {
   try {
     await connectToDatabase()
 
-    const updatedUser = await User.findOneAndUpdate({ clerkId }, user, { new: true })
+    const { _id, ...updateData } = data; 
+
+    const updatedUser = await User.findByIdAndUpdate( 
+      _id , 
+      updateData, 
+      { new: true }
+    )
 
     if (!updatedUser) throw new Error('User update failed')
     return JSON.parse(JSON.stringify(updatedUser))

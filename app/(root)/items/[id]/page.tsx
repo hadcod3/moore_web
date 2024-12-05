@@ -9,12 +9,6 @@ import { getItemById } from '@/lib/actions/item.actions';
 
 const ItemDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
     const item = await getItemById(id);
-    // const relatedPackets = await getRelatedPacketsByCategory({
-    //     categoryId: packet.category._id,
-    //     packetId: packet._id,
-    //     page: searchParams.page as string,
-    // })
-
     const { sessionClaims } = auth();
     const userId = sessionClaims?.userId as string;
     const isOrganizer = userId === item.organizer._id;
@@ -36,10 +30,10 @@ const ItemDetails = async ({ params: { id }, searchParams }: SearchParamProps) =
                         <div className="flex w-full flex-col gap-3">
                             <div className="flex flex-col gap-3">
                                 <div className='flex gap-2'>
-                                    <p className="p-medium-16 rounded-full w-fit bg-primary-100/30 px-4 p-1 text-primary-300">
+                                    <p className="w-fit px-4 p-1 border border-gray-100 bg-gray-50 rounded-2xl">
                                         {item.type.name}
                                     </p>
-                                    <p className="p-medium-16 rounded-full w-fit bg-primary-100/30 px-4 p-1 text-primary-300">
+                                    <p className="w-fit px-4 p-1 border border-gray-100 bg-gray-50 rounded-2xl">
                                         {item.category.name}
                                     </p>
                                 </div>

@@ -9,20 +9,32 @@ import Image from 'next/image'
 import { MdAlternateEmail,MdLocationPin } from "react-icons/md";
 import { getItemsByOrganizerId } from '@/lib/actions/item.actions'
 import Collection from '@/components/shared/Collection'
-import { TbEdit } from "react-icons/tb";
+import { TbEdit, TbTransform } from "react-icons/tb";
 import AbandonedPage from '@/components/shared/AbandonedPage'
 import { IUser } from '@/lib/database/models/user.model'
 import { BsClipboardCheck } from 'react-icons/bs'
-import { IoArrowBack } from 'react-icons/io5'
+import { IoArrowBack, IoNotificationsOutline } from 'react-icons/io5'
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableOrders from '@/components/shared/TableOrders'
 import { getTransactionByBuyerId } from '@/lib/actions/transaction.actions'
 import { getCurrentUserId } from '@/lib/utils_server'
+import { getNotificationByToId } from '@/lib/actions/notification.actions'
+import NotificationModal from '@/components/shared/NotificationModal'
+import { HiOutlinePlus } from 'react-icons/hi2'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
+import EditProfile from '@/components/shared/EditProfile'
 
 const Profile = async () => {
 
     const userId = getCurrentUserId();
     const profile : IUser = await getUserById(userId as string);
+    const notificationData = await getNotificationByToId(userId as string)
+    // console.log(notificationData)
     
     const fetchItemsByVendor = async ({ organizerId, typeId}: { organizerId: string; typeId: string;}) => {
         try {
@@ -69,33 +81,37 @@ const Profile = async () => {
                         className="text-primary-500 rounded-3xl"
                     />
                     <div className=' flex flex-col justify-between'>
-                        <div>
+                        <div className="w-fit py-2 px-5 border border-gray-200 bg-gray-50 rounded-2xl shadow-sm">
                             <div className='flex gap-2'>
-                                <h3 className='h2-bold capitalize text-primary-500'>{profile.firstName}</h3>
-                                <h3 className='h2-bold capitalize text-primary-500'>{profile.lastName}</h3>
+                                <h3 className='h2-bold capitalize text-secondary-300 font-playfair'>{profile.firstName}</h3>
+                                <h3 className='h2-bold capitalize text-secondary-300 font-playfair'>{profile.lastName}</h3>
                             </div>
-                            <div className='flex gap-1 items-center'>
-                                <MdAlternateEmail size={20} />
-                                <h5 className='h5-medium text-base font-medium text-secondary-300'>{profile.email}</h5>
-                            </div>
-                            <div className='flex gap-1 items-center'>
-                                <MdLocationPin size={20} />
-                                <h5 className='h5-medium text-base font-medium text-secondary-300'>{profile.city}</h5>
+                            <div className='flex gap-2 opacity-80'>
+                                <div className='flex gap-1 items-center'>
+                                    <MdAlternateEmail size={20} />
+                                    <h5 className='h5-medium text-base font-medium'>{profile.email}</h5>
+                                </div>
+                                <div className='flex gap-1 items-center'>
+                                    <MdLocationPin size={20} />
+                                    <h5 className='h5-medium text-base font-medium'>{profile.city}</h5>
+                                </div>
                             </div>
                         </div>
-                        <div className='flex gap-3'>
+                        <div className='flex space-x-3'>
                             {!profile.isVendor && (
-                                <VerificationButton userId={profile._id}/>
+                                <Button size="lg" className="button-ic">
+                                    <TbTransform size={20}/>
+                                    <Link href="/packets/create">
+                                        Be Vendor
+                                    </Link>
+                                </Button>
+                                // <VerificationButton userId={profile._id}/>
                             )}
-                            <Button size="lg" className="button-ic w-52">
-                                <TbEdit />
-                                <Link href="/packets/create">
-                                    Edit Profile
-                                </Link>
-                            </Button>
+                            <NotificationModal value={notificationData}/>
+                            <EditProfile userData={profile}/>
                             {profile.isVendor && (
-                                <Button size="lg" className="button-ic w-40">
-                                    <BsClipboardCheck/>
+                                <Button size="lg" className="button-ic">
+                                    <BsClipboardCheck size={20}/>
                                     <Link href="/profile/orders">
                                         Orders
                                     </Link>
@@ -104,47 +120,67 @@ const Profile = async () => {
                         </div>
                     </div>
                 </div>
-                {profile.isVendor &&(
-                    <div className="h-20 flex justify-center items-center gap-x-4">
-                        <div className="w-32 h-40 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
-                            <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
-                                <Image
-                                    src="/assets/icons/ic_packet.png"
-                                    alt="packet"
-                                    width={18}
-                                    height={18}
-                                />
-                            </div>
-                            <h1 className="text-[50px] font-semibold">{organizedPackets.length}</h1>
-                            <p className='text-base font-semibold'>Packets</p>
+            </section>
+            {profile.isVendor &&(
+                <div className="h-fit flex justify-center items-center gap-x-4 pb-10">
+                    <div className="w-60 h-20 bg-gray-50 flex items-center border border-gray-100 rounded-2xl p-4 gap-x-3 shadow-sm overflow-hidden">
+                        <div className='p-4 flex items-center justify-center rounded-full bg-gray-100'>
+                            <Image
+                                src="/assets/icons/ic_packet.png"
+                                alt="packet"
+                                width={20}
+                                height={20}
+                            />
                         </div>
-                        <div className="w-32 h-40 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
-                            <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
-                                <Image
-                                    src="/assets/icons/ic_product.png"
-                                    alt="product"
-                                    width={18}
-                                    height={18}
-                                />
-                            </div>
-                            <h1 className="text-[50px] font-semibold">{organizedProducts.length}</h1>
-                            <p className='text-base font-semibold'>Product</p>
-                        </div>
-                        <div className="w-32 h-40 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
-                            <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
-                                <Image
-                                    src="/assets/icons/ic_gear.png"
-                                    alt="gear"
-                                    width={18}
-                                    height={18}
-                                />
-                            </div>
-                            <h1 className="text-[50px] font-semibold">{organizedGears.length}</h1>
-                            <p className='text-base font-semibold'>Gears</p>
+                        <div>
+                            <h1 className="text-xl font-semibold">{organizedPackets.length}</h1>
+                            <p className='text-sm'>Packets Organized</p>
                         </div>
                     </div>
-                )}
-            </section>
+                    <div className="w-60 h-20 bg-gray-50 flex items-center border border-gray-100 rounded-2xl p-4 gap-x-3 shadow-sm overflow-hidden">
+                        <div className='p-4 flex items-center justify-center rounded-full bg-gray-100'>
+                            <Image
+                                src="/assets/icons/ic_product.png"
+                                alt="packet"
+                                width={20}
+                                height={20}
+                            />
+                        </div>
+                        <div>
+                            <h1 className="text-xl font-semibold">{organizedProducts.length}</h1>
+                            <p className='text-sm'>Products Organized</p>
+                        </div>
+                    </div>
+                    <div className="w-60 h-20 bg-gray-50 flex items-center border border-gray-100 rounded-2xl p-4 gap-x-3 shadow-sm overflow-hidden">
+                        <div className='p-4 flex items-center justify-center rounded-full bg-gray-100'>
+                            <Image
+                                src="/assets/icons/ic_gear.png"
+                                alt="packet"
+                                width={20}
+                                height={20}
+                            />
+                        </div>
+                        <div>
+                            <h1 className="text-xl font-semibold">{organizedGears.length}</h1>
+                            <p className='text-sm'>Gears Organized</p>
+                        </div>
+                    </div>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href={"/items/create"} className="relative w-20 h-20 bg-gray-50 flex items-center border border-gray-100 rounded-2xl p-4 gap-x-3 shadow-sm overflow-hidden">
+                                    <div className='p-4 flex items-center justify-center rounded-full bg-gray-100'>
+                                        <HiOutlinePlus />
+                                    </div>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                            <p>Add Items</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
+            )}
 
             {!profile.isVendor ? (
                 <>
@@ -265,6 +301,7 @@ const Profile = async () => {
             )}
 
             <Toaster/>
+
 
         </>
     )

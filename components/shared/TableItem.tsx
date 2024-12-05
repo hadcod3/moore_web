@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { formatDateTime, formatPrice } from '@/lib/utils'
 import { getUserById } from '@/lib/actions/user.actions'
@@ -10,18 +11,22 @@ import { ICart } from '@/lib/database/models/cart.model'
 import { IItem } from '@/lib/database/models/item.model'
 import Counter from './Counter'
 import { FiCheckSquare } from 'react-icons/fi'
+import { Button } from '../ui/button'
+import TransactionModal from './TransactionModal'
+import { getItemById } from '@/lib/actions/item.actions'
+import { getCurrentUserId } from '@/lib/utils_server'
+import { IUser } from '@/lib/database/models/user.model'
 
 type TransactionProps = {
-    data: ITransaction | IOrder | ICart | IItem
-    model: "Transaction" | "Order" | "Cart" | "Rental"
+    data: ITransaction | IOrder 
+    model: "Transaction" | "Order"
 }
 const TableItem = async ({ data, model } : TransactionProps) => {
-
-    // if (model === "Transaction" || "IOrder"){
-    //     const userData = await getUserById((data as ITransaction).buyer)
-    //     return userData
-    // }
     const userData = await getUserById((data as ITransaction).buyer)
+    let itemType = await getItemById((data as ITransaction).items._id)
+    const userId = getCurrentUserId();
+    const currentUser : IUser = await getUserById(userId as string);
+    itemType = itemType.type.name
 
     return (
         <>
@@ -46,11 +51,7 @@ const TableItem = async ({ data, model } : TransactionProps) => {
                     <TableCell><p className="text-secondary-300 max-w-[6ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{formatDateTime((data as ITransaction).createdAt)}</p></TableCell>
                     <TableCell><p className="text-secondary-300 max-w-[6ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{formatDateTime((data as ITransaction).forDate)}</p></TableCell>
                     <TableCell className="text-secondary-300">
-                        <div className="flex flex-col gap-3 rounded-xl bg-white/30 w-11 h-fit py-3 items-center justify-center backdrop-blur-lg shadow-sm transition-all">
-                            <Link href={`/items`}>
-                                <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
-                            </Link>
-                        </div>
+                        <TransactionModal value={data as ITransaction} buyer={`${userData.firstName} ${userData.lastName}`} itemType={itemType} currentUser={currentUser}/>
                     </TableCell>
                 </TableRow>
             ) : model === "Transaction" ? (

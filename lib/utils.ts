@@ -20,25 +20,29 @@ export const currentUser = (userId: string) => {
   return data
 }
 
-export const formatDateTime = (dateString: Date) => {
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    day: '2-digit', // ensures the day is always two digits (e.g., '12')
-    month: 'short', // abbreviated month name (e.g., 'Jan')
-    year: 'numeric', // numeric year (e.g., '2024')
-  };
+export const formatDateTime = (dateString: string | Date): string => {
+    const date = new Date(dateString);
 
-  const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: 'numeric', // numeric hour (e.g., '10')
-    minute: '2-digit', // ensures minutes are always two digits (e.g., '10')
-    hour12: true, // use 12-hour clock (e.g., 'PM')
-  };
+    // Format time
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
+    const time = timeFormatter.format(date);
 
-  const formattedDate = new Date(dateString).toLocaleDateString('en-US', dateOptions); // e.g., "12 Jan 2024"
-  const formattedTime = new Date(dateString).toLocaleTimeString('en-US', timeOptions); // e.g., "10:10 PM"
+    // Format date
+    const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+    const formattedDate = dateFormatter.format(date).replace(/\//g, '.'); // Convert slashes to dots
 
-  // Combine the formatted date and time with the desired separator
-  return `${formattedDate} • ${formattedTime}`;
+    // Combine time and date
+    return `${time}•${formattedDate}`;
 };
+
 
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file)
 

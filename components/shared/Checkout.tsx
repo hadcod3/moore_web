@@ -47,14 +47,14 @@ const Checkout = ({ item, buyerId }: { item: IItem, buyerId: string}) => {
 
     return item.type.name === "product" ? (
         <form action={addToCart} >
-            <Button type="submit" role="link" size="lg" className="sm:w-fit py-3 bg-secondary-300 text-white">
+            <Button type="submit" role="link" size="lg" className="button">
                 Add to Cart
             </Button>
             <ToastContainer />
         </form>
     ) : (
         <form action={() => router.push(`/payment/${item._id}`)} >
-        <Button type="submit" role="link" size="lg" className="sm:w-fit py-3 bg-secondary-300 text-white">    
+        <Button type="submit" role="link" size="lg" className="button">    
             Rent Now
         </Button>
         </form>

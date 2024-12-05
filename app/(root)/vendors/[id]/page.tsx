@@ -55,20 +55,25 @@ const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps
                             height={120}
                             className='w-32 h-32 rounded-full overflow-hidden'
                         />
-                        <div>
-                            <h1 className='font-bold text-3xl text-secondary-400'>{vendorProfile.firstName} {vendorProfile.lastName}</h1>
-                            <div className='flex gap-1 items-center'>
-                                <MdAlternateEmail size={20} color='#062D14' />
-                                <h5 className='h5-medium text-base font-medium text-secondary-300'>{vendorProfile.email}</h5>
+                        <div className="w-fit py-2 px-5 border border-gray-200 bg-gray-50 rounded-2xl shadow-sm">
+                            <div className='flex gap-2'>
+                                <h3 className='h2-bold capitalize text-secondary-300 font-playfair'>{vendorProfile.firstName}</h3>
+                                <h3 className='h2-bold capitalize text-secondary-300 font-playfair'>{vendorProfile.lastName}</h3>
                             </div>
-                            <div className='flex gap-1 items-center'>
-                                <MdLocationPin size={20} color='#062D14'/>
-                                <h5 className='h5-medium text-base font-medium text-secondary-300'>{vendorProfile.city}</h5>
+                            <div className='flex flex-col opacity-80'>
+                                <div className='flex gap-1 items-center'>
+                                    <MdAlternateEmail size={20} />
+                                    <h5 className='h5-medium text-base font-medium'>{vendorProfile.email}</h5>
+                                </div>
+                                <div className='flex gap-1 items-center'>
+                                    <MdLocationPin size={20} />
+                                    <h5 className='h5-medium text-base font-medium'>{vendorProfile.city}</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-x-4">
-                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
+                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-2xl bg-gray-50 p-4 pt-2 shadow-sm overflow-hidden">
                             <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
                                 <Image
                                     src="/assets/icons/ic_packet.png"
@@ -80,7 +85,7 @@ const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps
                             <h1 className="text-[36px] font-semibold">{organizedPackets.length}</h1>
                             <p className='text-base font-semibold'>Packets</p>
                         </div>
-                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
+                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-2xl bg-gray-50 p-4 pt-2 shadow-sm overflow-hidden">
                             <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
                                 <Image
                                     src="/assets/icons/ic_product.png"
@@ -92,7 +97,7 @@ const PackageDetails = async ({ params: { id }, searchParams }: SearchParamProps
                             <h1 className="text-[36px] font-semibold">{organizedProducts.length}</h1>
                             <p className='text-base font-semibold'>Product</p>
                         </div>
-                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-lg p-4 pt-2 shadow-sm overflow-hidden">
+                        <div className="w-28 h-32 flex flex-col items-center border border-gray-100 rounded-2xl bg-gray-50 p-4 pt-2 shadow-sm overflow-hidden">
                             <div className='relative p-2 flex items-center justify-center rounded-full border border-gray-100 shadow-inner'>
                                 <Image
                                     src="/assets/icons/ic_gear.png"

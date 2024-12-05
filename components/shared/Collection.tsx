@@ -55,7 +55,7 @@ const Collection = ({
                         <Pagination urlParamName={urlParamName} page={page} totalPages={totalPages} />
                     )}
                     {collectionModel === "Sample" && (
-                        <Button size="lg" asChild className="button-ic w-full sm:w-fit hover:bg-primary-200 transition-colors duration-200 ease-in-out">
+                        <Button size="lg" asChild className="button">
                             <Link href={linkHref}>See More {type}</Link>
                         </Button>
                     )}

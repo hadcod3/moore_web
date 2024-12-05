@@ -94,6 +94,20 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.styled-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Width of the vertical scrollbar */
+  height: 6px; /* Height of the horizontal scrollbar */
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded edges for the thumb */
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
 .modal-content {
   transform: translateY(100%); /* Initially position the modal off-screen */
   animation: slideUp 0.5s ease-out forwards; /* Slide-up animation */
@@ -241,23 +255,23 @@ input[type=number] {
 
   /* SHADCN OVERRIDES */
   .select-field {
-    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
+    @apply w-full outline-none h-[54px] border border-gray-200 bg-gray-50 rounded-2xl shadow-sm placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
   } 
 
   .input-field {
-    @apply w-full bg-white border-b-2 outline-none border-primary-100 h-[54px] placeholder:text-primary-500 rounded-full placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
+    @apply w-full outline-none h-[54px] border border-gray-200 bg-gray-50 rounded-2xl shadow-sm placeholder:text-grey-300 p-regular-16 px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important;
   } 
 
   .textarea {
-    @apply flex flex-1 placeholder:text-grey-300 p-regular-16 px-5 py-3 bg-white border border-b-2 border-primary-100  focus-visible:ring-transparent !important;
+    @apply resize-none flex flex-1 placeholder:text-grey-300 p-regular-16 px-5 py-3 border border-gray-200 bg-gray-50 rounded-2xl shadow-sm focus-visible:ring-transparent !important;
   }
 
   .button {
-    @apply rounded-full h-[54px] p-regular-16;
+    @apply p-regular-16 border border-gray-200 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out;
   }
-
+ 
   .button-ic{
-    @apply bg-white border-b-2 border-primary-100 text-primary-500 rounded-full p-medium-16 sm:flex flex gap-2 hover:bg-primary-300 hover:text-white transition-colors duration-200 ease-in-out;
+    @apply flex items-center gap-1 w-fit py-2 px-5 border border-gray-200 bg-gray-50 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out;
   }
 
   .select-item {

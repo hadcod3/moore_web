@@ -8,7 +8,7 @@ import Transaction, { ITransaction } from '../database/models/transaction.model'
 const populateItem = (query: any) => {
     return query
     .populate({ path: 'buyer', model: User, select: '_id firstName lastName' })
-    .populate({ path: 'items', model: Item, select: '_id name' })
+    .populate({ path: 'items', model: Item, select: '_id name organizer' })
 }
 
 export async function createTransactions(transactionsData: Omit<ITransaction, '_id' | 'createdAt' | 'updatedAt'>[]) {
@@ -62,6 +62,39 @@ export async function getAllTransactions() {
     }
 }
 
+// Get all items by organizer
+export async function getAllItemsByOrganizer(organizerId: string) {
+  try {
+    await connectToDatabase();
+
+    const transactions = await Transaction.find()
+      .populate({
+        path: 'items',
+        populate: {
+          path: 'organizer', 
+          match: { _id: organizerId } 
+        }
+      });
+
+    const filteredTransactions = transactions.filter(transaction => 
+      transaction.items.organizer && transaction.items.organizer._id.toString() === organizerId
+    );
+
+    if (!filteredTransactions || filteredTransactions.length === 0) {
+      console.log('No transactions found for the given organizer');
+      throw new Error('No transactions available for this organizer');
+    }
+
+    return JSON.parse(JSON.stringify(filteredTransactions));
+  } catch (error) {
+    console.error('Error fetching transactions by organizer:', error);
+    if (error instanceof Error) {
+      console.error(error.stack); // Log detailed error stack for further insights
+    }
+    throw new Error('Failed to fetch transactions for this organizer');
+  }
+}
+
 // GET ALL ITEMS BY BUYER ID
 export async function getTransactionByBuyerId(buyerId: string) {
     try {
@@ -70,7 +103,7 @@ export async function getTransactionByBuyerId(buyerId: string) {
   
       // Query to get all items by buyer ID
       const items = await populateItem(
-        Transaction.find({ buyer: buyerId }) // Assuming "buyer" is the field for buyer ID in the Transaction model
+        Transaction.find({ buyer: buyerId })
       );
   
       // If no items are found, log and throw an error
@@ -114,4 +147,32 @@ export async function getTransactionByItemId(itemId: string) {
       }
       throw new Error('Failed to fetch items for these IDs');
     }
+}
+
+export async function updateTransactionStatus(itemId : string, status: string){
+  try {
+    // Connect to the database
+    await connectToDatabase();
+
+    // Find and update the transaction
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      itemId,
+      { status },
+      { new: true } 
+    );
+
+    if (!updatedTransaction) {
+      throw new Error(`Transaction with ID ${itemId} not found`);
+    }
+
+    console.log(`Transaction ${itemId} updated successfully:`, updatedTransaction);
+    return updatedTransaction; // Return the updated transaction
+
+  } catch (error) {
+    console.error('Error fetching items by item IDs:', error);
+    if (error instanceof Error) {
+      console.error(error.stack); // Log detailed error stack for further insights
+    }
+    throw new Error('Failed to fetch items for these IDs');
+  }
 }

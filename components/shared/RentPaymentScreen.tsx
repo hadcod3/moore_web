@@ -252,12 +252,15 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                         <p className='text-gray-400'>Grand total</p>
                         <p className='font-semibold'>Rp{grandTotal.toLocaleString('id-ID')}</p>
                     </div>
-                    <Button
-                        className='w-full rounded-lg border border-gray-200 bg-white'
-                        onClick={handleCreateTransaction}
-                    >
-                        Make Request
-                    </Button>
+                    <form action={handleCreateTransaction} method='post'>
+                        <Button
+                            type='submit'
+                            role="link"
+                            className="w-full rounded-lg border border-gray-200 bg-white"
+                        >
+                            Make Request
+                        </Button>
+                    </form>
                 </div>
             </section>
             {/* PAYMENT SECTION END */}

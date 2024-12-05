@@ -6,27 +6,27 @@ import { getItemById } from "@/lib/actions/item.actions"
 import { getTransactionByItemId } from "@/lib/actions/transaction.actions"
 import { SearchParamProps } from "@/types"
 import Link from "next/link"
+import { IoIosArrowRoundBack } from "react-icons/io"
 import { IoArrowBack } from "react-icons/io5";
 
 const TransactionScreen = async ({ params: { id } }: SearchParamProps) => {
     
-    const paramsData = await getItemById(id)
+    const itemsData = await getItemById(id)
     const transactionData = await getTransactionByItemId(id)
+    console.log(itemsData)
  
     return (
-        <>
-            <div className="wrapper flex justify-between">
+        <div className="wrapper">
+            <div className="flex justify-between">
                 <div>
                     <h2 className="h2-bold font-playfair">Orders</h2>
-                    <p className="font-playfair">{paramsData.data.name}</p>
                 </div>
-                <Button size="lg" className="button-ic w-36">
-                    <IoArrowBack /> 
-                    <Link href="/profile">
-                        Back
-                    </Link>
-                </Button>
+                <Link href="/profile" className="button-ic">
+                    <IoIosArrowRoundBack size={20}/>
+                    <p>Back</p>
+                </Link>
             </div>
+            <p className="font-playfair">{itemsData.name}</p>
             <section className="wrapper mt-8">
                 <Table>
                     <TableCaption>A list of your recent invoices.</TableCaption>
@@ -55,7 +55,7 @@ const TransactionScreen = async ({ params: { id } }: SearchParamProps) => {
                     </TableBody>
                 </Table>
             </section>
-        </>
+        </div>
     )
 }
 

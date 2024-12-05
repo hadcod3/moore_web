@@ -2,13 +2,15 @@
 import TableOrders from "@/components/shared/TableOrders"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { getAllTransactions } from "@/lib/actions/transaction.actions"
+import { getAllItemsByOrganizer, getAllTransactions } from "@/lib/actions/transaction.actions"
+import { getCurrentUserId } from "@/lib/utils_server"
 import Link from "next/link"
+import { IoIosArrowRoundBack } from "react-icons/io"
 import { IoArrowBack } from "react-icons/io5"
 
 const TransactionScreen = async () => {
-    
-    let transactionData = await getAllTransactions()
+    const userId = getCurrentUserId();
+    let transactionData = await getAllItemsByOrganizer(userId as string)
  
     return (
         <>
@@ -16,12 +18,10 @@ const TransactionScreen = async () => {
                 <div>
                     <h2 className="h2-bold font-playfair">Orders</h2>
                 </div>
-                <Button size="lg" className="button-ic w-36">
-                    <IoArrowBack /> 
-                    <Link href="/profile">
-                        Back
-                    </Link>
-                </Button>
+                <Link href="/profile" className="button-ic">
+                    <IoIosArrowRoundBack size={20}/>
+                    <p>Back</p>
+                </Link>
             </div>
             <section className="wrapper mt-8">
                 <Table>

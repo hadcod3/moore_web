@@ -12,9 +12,11 @@ type FileUploaderProps = {
   onFieldChange: (url: string) => void
   imageUrl: string
   setFiles: Dispatch<SetStateAction<File[]>>
+  setHeightImg: string
+  setWidthImg: string
 }
 
-export function FileUploader({ imageUrl, onFieldChange, setFiles }: FileUploaderProps) {
+export function FileUploader({ imageUrl, onFieldChange, setFiles, setHeightImg, setWidthImg }: FileUploaderProps) {
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles)
     onFieldChange(convertFileToUrl(acceptedFiles[0]))
@@ -29,7 +31,7 @@ export function FileUploader({ imageUrl, onFieldChange, setFiles }: FileUploader
     <div
       {...getRootProps()}
 
-      className="flex-center bg-dark-3 flex h-72 cursor-pointer flex-col overflow-hidden rounded-xl bg-white border border-b-2 border-primary-100 ">
+      className={`flex-center bg-dark-3 flex ${setWidthImg} ${setHeightImg} cursor-pointer flex-col overflow-hidden border border-gray-200 bg-gray-50 rounded-2xl shadow-sm`} >
 
       <input {...getInputProps()} className="cursor-pointer" />
 
@@ -40,7 +42,7 @@ export function FileUploader({ imageUrl, onFieldChange, setFiles }: FileUploader
             alt="image"
             width={250}
             height={250}
-            className="w-full object-cover object-center"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       ) : (

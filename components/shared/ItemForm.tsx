@@ -19,6 +19,8 @@ import { IItem } from "@/lib/database/models/item.model"
 import AbandonedPage from "./AbandonedPage"
 import { createItem, updateItem } from "@/lib/actions/item.actions"
 import DropdownSecond from "./DropdownSecond"
+import { FaRupiahSign } from "react-icons/fa6";
+import { HiMiniAdjustmentsHorizontal, HiOutlineInboxStack } from "react-icons/hi2"
 
 type ItemFormProps = {
     userId: string;
@@ -190,14 +192,8 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
                 render={({ field }) => (
                     <FormItem className="w-full">
                     <FormControl>
-                        <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-primary-100/0 border border-b-2 border-primary-100 px-4 py-2">
-                        <Image
-                            src="/assets/icons/link.svg"
-                            alt="stock"
-                            width={24}
-                            height={24}
-                            className="filter-grey"
-                        />
+                        <div className="flex-center h-[54px] w-full overflow-hidden border border-gray-200 bg-gray-50 rounded-2xl shadow-sm px-4 py-2">
+                        <FaRupiahSign opacity={0.5}/>
                         <Input 
                         type="number" 
                         placeholder="Price" {...field}
@@ -219,14 +215,8 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
                 render={({ field }) => (
                     <FormItem className="w-full">
                     <FormControl>
-                        <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-primary-100/0 border border-b-2 border-primary-100 px-4 py-2">
-                        <Image
-                            src="/assets/icons/dollar.svg"
-                            alt="dollar"
-                            width={24}
-                            height={24}
-                            className="filter-grey"
-                        />
+                        <div className="flex-center h-[54px] w-full overflow-hidden border border-gray-200 bg-gray-50 rounded-2xl shadow-sm px-4 py-2">
+                        <HiOutlineInboxStack opacity={0.5} />
                         <Input 
                         type="number" 
                         placeholder="Stock" {...field} 
@@ -245,14 +235,8 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
                 render={({ field }) => (
                     <FormItem className="w-full">
                     <FormControl>
-                        <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-primary-100/0 border border-b-2 border-primary-100 px-4 py-2">
-                        <Image
-                            src="/assets/icons/link.svg"
-                            alt="stock"
-                            width={24}
-                            height={24}
-                            className="filter-grey"
-                        />
+                        <div className="flex-center h-[54px] w-full overflow-hidden border border-gray-200 bg-gray-50 rounded-2xl shadow-sm px-4 py-2">
+                        <HiMiniAdjustmentsHorizontal opacity={0.5} />
                         <Input 
                         type="number" 
                         placeholder="Min. Order" {...field} 
@@ -272,7 +256,7 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                    <FormItem className="w-full border-primary-100 rounded-2xl">
+                    <FormItem className="w-full rounded-2xl">
                     <FormControl className="h-72">
                         <Textarea placeholder="Description" {...field} className="textarea rounded-2xl resize-none" />
                     </FormControl>
@@ -284,12 +268,14 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
-                    <FormItem className="w-full border-primary-100 rounded-2xl">
+                    <FormItem className="w-full rounded-2xl ">
                     <FormControl className="h-72">
                         <FileUploader  
                         onFieldChange={field.onChange}
                         imageUrl={field.value}
                         setFiles={setFiles}
+                        setHeightImg="h-72"
+                        setWidthImg="w-full"
                         />
                     </FormControl>
                     <FormMessage />
@@ -302,7 +288,7 @@ const ItemForm = ({ userId, typeForm, data }: ItemFormProps) => {
             type="submit"
             size="lg"
             disabled={form.formState.isSubmitting}
-            className="button col-span-2 text-white w-full bg-primary-400"
+            className="button col-span-2 w-full"
             >
             {form.formState.isSubmitting ? (
                 'Submitting...'

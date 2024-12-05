@@ -14,11 +14,18 @@ export type CreateUserParams = {
 
 }
 export type UpdateUserParams = {
-    firstName: string
-    lastName: string
-    username: string
-    photo: string
+    data:{
+        _id: string
+        username?: string
+        firstName?: string
+        lastName?: string
+        address?: string
+        city?: string
+        photo?: string
+        isVendor?: boolean
+    }
 }
+
 export type GetAllUsersAsVendorsParams = {
     query: string
     category: string
