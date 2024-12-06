@@ -1,7 +1,5 @@
 
-import VerificationButton from '@/components/shared/VerificationButton'
 import { Button } from '@/components/ui/button'
-import { Toaster } from '@/components/ui/toaster'
 import Link from 'next/link'
 import React from 'react'
 import { getUserById } from '@/lib/actions/user.actions'
@@ -9,11 +7,10 @@ import Image from 'next/image'
 import { MdAlternateEmail,MdLocationPin } from "react-icons/md";
 import { getItemsByOrganizerId } from '@/lib/actions/item.actions'
 import Collection from '@/components/shared/Collection'
-import { TbEdit, TbTransform } from "react-icons/tb";
+import { TbTransform } from "react-icons/tb";
 import AbandonedPage from '@/components/shared/AbandonedPage'
 import { IUser } from '@/lib/database/models/user.model'
 import { BsClipboardCheck } from 'react-icons/bs'
-import { IoArrowBack, IoNotificationsOutline } from 'react-icons/io5'
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableOrders from '@/components/shared/TableOrders'
 import { getTransactionByBuyerId } from '@/lib/actions/transaction.actions'
@@ -27,7 +24,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
   } from "@/components/ui/tooltip"
-import EditProfile from '@/components/shared/EditProfile'
+import UpdateProfile from '@/components/shared/UpdateProfile'
 
 const Profile = async () => {
 
@@ -99,16 +96,9 @@ const Profile = async () => {
                         </div>
                         <div className='flex space-x-3'>
                             {!profile.isVendor && (
-                                <Button size="lg" className="button-ic">
-                                    <TbTransform size={20}/>
-                                    <Link href="/packets/create">
-                                        Be Vendor
-                                    </Link>
-                                </Button>
-                                // <VerificationButton userId={profile._id}/>
+                                <UpdateProfile userData={profile} isUpdate={false}/>
                             )}
-                            <NotificationModal value={notificationData}/>
-                            <EditProfile userData={profile}/>
+                            <UpdateProfile userData={profile} isUpdate={true}/>
                             {profile.isVendor && (
                                 <Button size="lg" className="button-ic">
                                     <BsClipboardCheck size={20}/>
@@ -117,6 +107,7 @@ const Profile = async () => {
                                     </Link>
                                 </Button>
                             )}
+                            <NotificationModal value={notificationData}/>
                         </div>
                     </div>
                 </div>
@@ -299,10 +290,6 @@ const Profile = async () => {
                     {/* GEARS CONTAINER END*/}
                 </>
             )}
-
-            <Toaster/>
-
-
         </>
     )
 }

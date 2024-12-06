@@ -2,12 +2,7 @@
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
-import { ITransaction } from '@/lib/database/models/transaction.model'
-import { FaRegCircleXmark } from "react-icons/fa6";
 import { formatDateTime } from '@/lib/utils'
-import { updateTransactionStatus } from '@/lib/actions/transaction.actions'
-import { createNotification } from '@/lib/actions/notification.actions'
-import { IUser } from '@/lib/database/models/user.model'
 import { INotification } from '@/lib/database/models/notification.model'
 import { IoClose, IoNotificationsOutline } from 'react-icons/io5'
 

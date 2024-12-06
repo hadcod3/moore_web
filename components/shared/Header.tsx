@@ -4,10 +4,6 @@ import Link from "next/link"
 import { Button } from "../ui/button"
 import NavItems from "./NavItems"
 import MobileNav from "./MobileNav"
-import { BsCart3 } from "react-icons/bs";
-import { IoEllipsisHorizontal, IoNotificationsOutline, IoReceiptOutline } from "react-icons/io5"
-import { getNotificationByToId } from "@/lib/actions/notification.actions"
-import { getCurrentUserId, notificationData } from "@/lib/utils_server"
 import HeaderAction from "./HeaderAction"
 
 const Header = () => {

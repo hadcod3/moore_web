@@ -1,7 +1,7 @@
 'use server'
 
 import { connectToDatabase } from '@/lib/database'  
-import Notification, { INotification } from '../database/models/notification.model'
+import Notification from '../database/models/notification.model'
 
 export async function createNotification(notificationData: {
   to: string;

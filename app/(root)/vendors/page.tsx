@@ -98,6 +98,7 @@ const Vendors = async ({ searchParams }: SearchParamProps) => {
                 ) : (
                     <div>no vendor</div>
                 )}
+
             </section>
         </>
     )

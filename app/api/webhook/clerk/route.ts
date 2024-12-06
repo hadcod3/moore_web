@@ -67,12 +67,9 @@ export async function POST(req: Request) {
       firstName: first_name,
       lastName: last_name,
       photo: image_url,
-
-
       created_at: created_at,
       updated_at: updated_at,
       isVendor: create_organization_enabled
-
     }
 
     const newUser = await createUser(user);

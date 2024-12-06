@@ -18,7 +18,7 @@ import { Button } from '../ui/button';
 import Counter from './Counter';
 import { IUser } from '@/lib/database/models/user.model';
 import { deleteCartItem, getItemById } from '@/lib/actions/item.actions';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { addressShippingEditSchema } from '@/lib/validator';
 import { loadStripe } from '@stripe/stripe-js';

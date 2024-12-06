@@ -20,7 +20,7 @@ export const addressShippingEditSchema = z.object({
     }),
 })
 
-export const editProfileSchema = z.object({
+export const updateProfileSchema = z.object({
     photo: z.string(),
     username: z
       .string()

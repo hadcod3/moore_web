@@ -1,3 +1,4 @@
+
 export const headerLinks = [
     {
       label: 'Home',
@@ -88,6 +89,101 @@ export const itemDefaultValues = {
     category: '',
     organizer: ''
 }
+
+// export const termsCondition = (
+//       <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md text-gray-800">
+//         <h1 className="text-2xl font-bold mb-4">Terms and Conditions</h1>
+//         <p className="mb-4">
+//           Welcome to the Wedding Organizer Marketplace. By registering as a vendor on our platform, you agree to the following terms and conditions. Please read them carefully.
+//         </p>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">1. Vendor Eligibility</h2>
+//           <ul className="list-disc pl-6">
+//             <li>1.1. Vendors must be at least 18 years old to register.</li>
+//             <li>1.2. Vendors must provide accurate and truthful information during registration.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">2. Use of the Platform</h2>
+//           <ul className="list-disc pl-6">
+//             <li>2.1. Vendors are responsible for the content, pricing, and availability of their listings.</li>
+//             <li>2.2. Vendors must ensure that their products and services comply with local laws and regulations.</li>
+//             <li>2.3. Vendors agree not to use the platform for any illegal, fraudulent, or harmful activities.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">3. Payments and Fees</h2>
+//           <ul className="list-disc pl-6">
+//             <li>3.1. A commission fee of [X%] will be deducted from each transaction.</li>
+//             <li>3.2. Payments to vendors will be processed within [X] business days after successful transactions.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">4. Cancellation and Refunds</h2>
+//           <ul className="list-disc pl-6">
+//             <li>4.1. Vendors must provide clear cancellation and refund policies in their listings.</li>
+//             <li>4.2. Vendors are responsible for resolving disputes with customers regarding cancellations or refunds.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">5. Intellectual Property</h2>
+//           <ul className="list-disc pl-6">
+//             <li>5.1. Vendors grant the marketplace a non-exclusive license to use product images, descriptions, and other content for marketing and promotional purposes.</li>
+//             <li>5.2. Vendors must own or have the legal right to use the content they upload.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">6. Termination</h2>
+//           <ul className="list-disc pl-6">
+//             <li>6.1. The marketplace reserves the right to terminate vendor accounts for violations of these terms.</li>
+//             <li>6.2. Vendors may deactivate their accounts at any time, but outstanding obligations must be fulfilled.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">7. Liability</h2>
+//           <ul className="list-disc pl-6">
+//             <li>7.1. The marketplace is not liable for disputes between vendors and customers.</li>
+//             <li>7.2. The marketplace does not guarantee the accuracy or completeness of vendor listings.</li>
+//           </ul>
+//         </div>
+  
+//         <p className="italic mb-4">
+//           By agreeing to these terms, you acknowledge that you have read, understood, and accepted them in their entirety.
+//         </p>
+  
+//         <h1 className="text-2xl font-bold mb-4">Privacy Policy</h1>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">1. Information We Collect</h2>
+//           <ul className="list-disc pl-6">
+//             <li>1.1. Personal Information: Name, email, phone number, and address.</li>
+//             <li>1.2. Business Information: Business name, description, product or service details.</li>
+//             <li>1.3. Payment Information: Bank account details for payouts.</li>
+//           </ul>
+//         </div>
+  
+//         <div className="mb-6">
+//           <h2 className="text-lg font-semibold mb-2">2. How We Use Your Information</h2>
+//           <ul className="list-disc pl-6">
+//             <li>2.1. To verify your identity and eligibility as a vendor.</li>
+//             <li>2.2. To process transactions and payouts.</li>
+//             <li>2.3. To communicate important updates and promotional offers.</li>
+//             <li>2.4. To improve the functionality of the platform.</li>
+//           </ul>
+//         </div>
+  
+//         <p className="text-sm mt-4 text-gray-600">
+//           For questions or concerns, please contact <a href="mailto:support@example.com" className="text-blue-600 underline">support@example.com</a>.
+//         </p>
+//       </div>
+//     );
 
 
   
