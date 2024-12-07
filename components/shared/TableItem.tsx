@@ -31,6 +31,7 @@ const TableItem = async ({ data, model } : TransactionProps) => {
     return (
         <>
             {model === "Order" ? (
+                // TRANSACTION FOR VENDOR
                 <TableRow
                     key={data._id}
                     className="p-regular-14 lg:p-regular-16 border-b "
@@ -55,6 +56,7 @@ const TableItem = async ({ data, model } : TransactionProps) => {
                     </TableCell>
                 </TableRow>
             ) : model === "Transaction" ? (
+                // TRANSACTION FOR CLIENT
                 <TableRow
                     key={data._id}
                     className="p-regular-14 lg:p-regular-16 border-b "
@@ -71,6 +73,9 @@ const TableItem = async ({ data, model } : TransactionProps) => {
                         }`}>{(data as ITransaction).status}</TableCell>
                     <TableCell><p className="text-secondary-300 max-w-[6ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{formatDateTime((data as ITransaction).createdAt)}</p></TableCell>
                     <TableCell><p className="text-secondary-300 max-w-[6ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{formatDateTime((data as ITransaction).forDate)}</p></TableCell>
+                    <TableCell className="text-secondary-300">
+                        <TransactionModal value={data as ITransaction} buyer={`${userData.firstName} ${userData.lastName}`} itemType={itemType} currentUser={currentUser}/>
+                    </TableCell>
                 </TableRow>
             ) : model === "Rental" ?(
                 <></>

@@ -314,9 +314,9 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                                 placeholder="Add shipping address"
                                 disabled
                                 value={addressShipping}
-                                className="w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0"
+                                className="w-full input-field"
                             />
-                            <Button onClick={handleEditAddress} className="h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300">
+                            <Button onClick={handleEditAddress} className="h-[54px] min-w-[54px] button">
                                 <Image
                                     src={'/assets/icons/edit_bw.svg'}
                                     alt="edit"
@@ -354,7 +354,7 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                         <Button
                             type='submit'
                             role="link"
-                            className="w-full rounded-lg border border-gray-200 bg-white"
+                            className="w-full button"
                             disabled={updatedCartContent.filter(cartItem => selectedItems[cartItem._id]).length === 0}
                         >
                             Continue to payment
@@ -366,11 +366,11 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
 
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
                         <p>Are you sure you want to delete this item from the cart?</p>
                         <div className="flex justify-center gap-4 mt-4">
-                            <Button onClick={handleDelete} className='w-20 bg-red-600 text-white'>Yes</Button>
-                            <Button onClick={() => setShowModal(false)} className='w-20 border border-gray-300'>No</Button>
+                            <Button onClick={handleDelete} className='w-40 bg-red-600 text-white button-recolorable hover:bg-red-700 hover:text-white'>Yes</Button>
+                            <Button onClick={() => setShowModal(false)} className='w-40 button'>No</Button>
                         </div>
                     </div>
                 </div>
@@ -381,20 +381,20 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                 <div className='fixed top-0 left-0 w-full h-full bg-black/30 flex items-center justify-center'>
                     <div className='bg-white p-4 rounded-2xl border-gray-300 flex flex-col gap-y-4'>
                         <h1>Edit Shipping Address</h1>
-                        <div className=''>
+                        <div>
                             <Input
                                 type='text'
                                 value={tempAddress}
                                 onChange={(e) => setTempAddress(e.target.value)}
                                 placeholder='Enter new shipping address'
-                                className='bg-white border-gray-200 rounded-lg w-80 h-[50px] text-md px-5 py-3 outline-none focus-visible:ring-transparent focus:ring-transparent !important'
+                                className='min-w-80 input-field'
                             />
                         </div>
                         <div className='w-full flex justify-between'>
-                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] bg-red-600 text-white'>
+                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] button-recolorable bg-red-600 text-white hover:bg-red-700 hover:text-white'>
                                 Cancel
                             </Button>
-                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300'>
+                            <Button onClick={handleSaveAddress} className='w-[48%] button'>
                                 Save
                             </Button>
                         </div>

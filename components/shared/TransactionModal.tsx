@@ -55,7 +55,7 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
     return (
         <div className="flex items-center gap-3">
             <button onClick={handleModal}>
-                <div className="flex flex-col gap-3 rounded-xl bg-white/30 w-11 h-fit py-3 items-center justify-center backdrop-blur-lg shadow-sm transition-all">
+                <div className="button p-3">
                     <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
                 </div>
             </button>
@@ -103,18 +103,24 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                         </div>
                         {
                             value.status === "under consideration" ? (
-                                <div className='w-full flex items-center justify-between'>
-                                    <Button 
-                                    className='w-[49%] rounded-md bg-red-600 text-white'
-                                    onClick={() => handleUpdateStatus(value._id, "rejected")}>
-                                        Reject
-                                    </Button>
-                                    <Button 
-                                    className='w-[49%] rounded-md bg-green-600 text-white'
-                                    onClick={() => handleUpdateStatus(value._id, "confirm")}>
-                                        Confirm
-                                    </Button>
-                                </div>
+                                value.buyer === currentUser._id ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Waiting for consideration from the vendor</p>
+                                    </div>
+                                ) : (
+                                    <div className='w-full flex items-center justify-between'>
+                                        <Button 
+                                        className='w-[49%] button-recolorable bg-red-600 hover:bg-red-700 text-white hover:text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "rejected")}>
+                                            Reject
+                                        </Button>
+                                        <Button 
+                                        className='w-[49%] button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "confirm")}>
+                                            Confirm
+                                        </Button>
+                                    </div>
+                                )
                             ) : value.status === "paid" && itemType === "gear" ?(
                                 <div className='w-full'>
                                     <Button 

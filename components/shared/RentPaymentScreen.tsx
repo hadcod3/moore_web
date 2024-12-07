@@ -191,14 +191,14 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                                 ref={dateInputRef}
                                 disabled
                                 placeholder='Add shipping address'
-                                className='w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0'
+                                className='w-full input-field'
                             />
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
                                     variant={"outline"}
                                     className={cn(
-                                        "h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300",
+                                        "h-[54px] min-w-[54px] button",
                                         !forDate && "text-muted-foreground"
                                     )}
                                     >
@@ -221,8 +221,8 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                     <div className='flex flex-col gap-1'>
                         <h1 className='text-lg font-semibold'>Shipping Address</h1>
                         <div className='flex gap-2'>
-                            <Input type='text' disabled placeholder='Add shipping address' value={addressShipping} className='w-full bg-white border-gray-200 rounded-lg h-[50px] placeholder:text-grey-300 text-md px-5 py-3 focus-visible:ring-transparent focus:ring-transparent !important focus-visible:ring-offset-0'/>
-                            <Button onClick={handleEditAddress} className='h-[50px] min-w-[50px] p-0 bg-white rounded-lg border border-gray-300'>
+                            <Input type='text' disabled placeholder='Add shipping address' value={addressShipping} className='w-full input-field'/>
+                            <Button onClick={handleEditAddress} className='h-[54px] min-w-[54px] button'>
                                 <Image
                                     src={"/assets/icons/edit_bw.svg"}
                                     alt="edit"
@@ -256,7 +256,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                         <Button
                             type='submit'
                             role="link"
-                            className="w-full rounded-lg border border-gray-200 bg-white"
+                            className="w-full button"
                         >
                             Make Request
                         </Button>
@@ -276,14 +276,14 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                                 value={tempAddress}
                                 onChange={(e) => setTempAddress(e.target.value)}
                                 placeholder='Enter new shipping address'
-                                className='bg-white border-gray-200 rounded-lg w-80 h-[50px] text-md px-5 py-3 outline-none focus-visible:ring-transparent focus:ring-transparent !important'
+                                className='min-w-80 h-[50px] input-field '
                             />
                         </div>
                         <div className='w-full flex justify-between'>
-                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] bg-red-600 text-white'>
+                            <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] button-recolorable bg-red-600 text-white hover:bg-red-700 hover:text-white'>
                                 Cancel
                             </Button>
-                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300'>
+                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300 button'>
                                 Save
                             </Button>
                         </div>

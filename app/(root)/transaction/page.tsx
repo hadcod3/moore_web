@@ -37,6 +37,7 @@ const TransactionScreen = async () => {
                             <TableHead>Status</TableHead>
                             <TableHead>Created</TableHead>
                             <TableHead>For Date</TableHead>
+                            <TableHead>Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
