@@ -27,7 +27,7 @@ export const checkoutOrder = async (order: CreateCheckoutParams) => {
                 name: item.name,
               },
             },
-            quantity: 1,
+            quantity: item.quantity,
           })),
           {
             price_data: {
