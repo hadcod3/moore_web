@@ -91,6 +91,7 @@ const ProfileForm = ({ userId, userData, isUpdate }: ProfileFormProps) => {
         } catch (error) {
             console.error("Error updating profile:", error)
         }
+        window.location.reload();
     }
 
     // Submit Form for Vendor Registration

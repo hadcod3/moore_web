@@ -31,7 +31,6 @@ const Profile = async () => {
     const userId = getCurrentUserId();
     const profile : IUser = await getUserById(userId as string);
     const notificationData = await getNotificationByToId(userId as string)
-    // console.log(notificationData)
     
     const fetchItemsByVendor = async ({ organizerId, typeId}: { organizerId: string; typeId: string;}) => {
         try {

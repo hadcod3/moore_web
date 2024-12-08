@@ -1,14 +1,11 @@
 
-import { IOrder } from '@/lib/database/models/order.model'
 import React from 'react'
 import TableItem from './TableItem'
 import { TableCell, TableRow } from '../ui/table'
 import { ITransaction } from '@/lib/database/models/transaction.model'
-import { ICart } from '@/lib/database/models/cart.model'
-import { IItem } from '@/lib/database/models/item.model'
 
 type CollectionProps = {
-    data: ITransaction[] | IOrder[] ,
+    data: ITransaction[] ,
     emptyTitle: string,
     emptyStateSubtext: string,
     model: "Transaction" | "Order"

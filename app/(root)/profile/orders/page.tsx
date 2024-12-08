@@ -2,15 +2,15 @@
 import TableOrders from "@/components/shared/TableOrders"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { getAllItemsByOrganizer, getAllTransactions } from "@/lib/actions/transaction.actions"
+import { getAllTransactionsByItemsOrganizer, getAllTransactions } from "@/lib/actions/transaction.actions"
 import { getCurrentUserId } from "@/lib/utils_server"
 import Link from "next/link"
 import { IoIosArrowRoundBack } from "react-icons/io"
 import { IoArrowBack } from "react-icons/io5"
 
-const TransactionScreen = async () => {
+const OrderScreen = async () => {
     const userId = getCurrentUserId();
-    let transactionData = await getAllItemsByOrganizer(userId as string)
+    let transactionData = await getAllTransactionsByItemsOrganizer(userId as string)
  
     return (
         <>
@@ -55,4 +55,4 @@ const TransactionScreen = async () => {
     )
 }
 
-export default TransactionScreen
+export default OrderScreen

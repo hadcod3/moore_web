@@ -9,11 +9,10 @@ import Link from "next/link"
 import { IoIosArrowRoundBack } from "react-icons/io"
 import { IoArrowBack } from "react-icons/io5";
 
-const TransactionScreen = async ({ params: { id } }: SearchParamProps) => {
+const OrderPerItemScreen = async ({ params: { id } }: SearchParamProps) => {
     
     const itemsData = await getItemById(id)
     const transactionData = await getTransactionByItemId(id)
-    console.log(itemsData)
  
     return (
         <div className="wrapper">
@@ -59,4 +58,4 @@ const TransactionScreen = async ({ params: { id } }: SearchParamProps) => {
     )
 }
 
-export default TransactionScreen
+export default OrderPerItemScreen

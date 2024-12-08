@@ -51,7 +51,163 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
         setModalView(false)
         window.location.reload();
     }
- 
+
+    const renderFooterModal = () => {
+        if (value.buyer !== currentUser._id) {
+            // Vendor Side
+            switch (value.status) {
+                case "under consideration":
+                    return (
+                        <div className="w-full flex items-center justify-between">
+                            <Button
+                                className="w-[49%] button-recolorable bg-red-600 hover:bg-red-700 text-white hover:text-white"
+                                onClick={() => handleUpdateStatus(value._id, "rejected")}
+                            >
+                                Reject
+                            </Button>
+                            <Button
+                                className="w-[49%] button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white"
+                                onClick={() => handleUpdateStatus(value._id, "confirm")}
+                            >
+                                Confirm
+                            </Button>
+                        </div>
+                    );
+                case "paid":
+                    if (itemType === "product") {
+                        return (
+                            <div className="w-full">
+                                <Button
+                                    className="w-full button-recolorable bg-blue-600 hover:bg-blue-700 text-white hover:text-white"
+                                    onClick={() => handleUpdateStatus(value._id, "packaging")}
+                                >
+                                    Packaging
+                                </Button>
+                            </div>
+                        );
+                    }
+                    if (itemType === "packet" || itemType === "gear") {
+                        return (
+                            <div className="w-full">
+                                <Button
+                                    className="w-full button-recolorable bg-blue-600 hover:bg-blue-700 text-white hover:text-white"
+                                    onClick={() => handleUpdateStatus(value._id, "installation")}
+                                >
+                                    Installation
+                                </Button>
+                            </div>
+                        );
+                    }
+                    break;
+                case "packaging":
+                    return (
+                        <div className="w-full">
+                            <Button
+                                className="w-full button-recolorable bg-blue-600 hover:bg-blue-700 text-white hover:text-white"
+                                onClick={() => handleUpdateStatus(value._id, "shipping")}
+                            >
+                                Shipping
+                            </Button>
+                        </div>
+                    );
+                case "confirm":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Waiting for customer payment</p>
+                        </div>
+                    );
+                case "rejected":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-red-400">This order was rejected</p>
+                        </div>
+                    );
+                case "shipping":
+                case "installation":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Waiting for customer confirmation</p>
+                        </div>
+                    );
+                case "success":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Order has been completed</p>
+                        </div>
+                    );
+                default:
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">No status</p>
+                        </div>
+                    );
+            }
+        } else {
+            // Client Side
+            switch (value.status) {
+                case "confirm":
+                    return (
+                        <div className="w-full">
+                            <Button
+                                className="w-full button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white"
+                                onClick={() => handleUpdateStatus(value._id, "paid")}
+                            >
+                                Payment
+                            </Button>
+                        </div>
+                    );
+                case "installation":
+                case "shipping":
+                    return (
+                        <div className="w-full">
+                            <Button
+                                className="w-full button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white"
+                                onClick={() => handleUpdateStatus(value._id, "success")}
+                            >
+                                Success
+                            </Button>
+                        </div>
+                    );
+                case "paid":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Waiting for progress from vendor</p>
+                        </div>
+                    );
+                case "under consideration":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Waiting for vendor confirmation</p>
+                        </div>
+                    );
+                case "rejected":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-red-400">This order was rejected</p>
+                        </div>
+                    );
+                case "packaging":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Orders are being prepared</p>
+                        </div>
+                    );
+                case "success":
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">Order has been completed</p>
+                        </div>
+                    );
+                default:
+                    return (
+                        <div className="w-full text-center">
+                            <p className="text-xs text-gray-400">No status</p>
+                        </div>
+                    );
+            }
+        }
+    };
+    
     return (
         <div className="flex items-center gap-3">
             <button onClick={handleModal}>
@@ -100,14 +256,12 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                             <p className='text-sm text-gray-500'>Total Amount</p>
                             <h1 className='text-base font-medium'>Rp{value.totalAmount.toLocaleString("id-ID")}</h1>
                             <p className='text-xs text-gray-500'>{`+ shipment cost (10% from subtotal)`}</p>
-                        </div>
-                        {
-                            value.status === "under consideration" ? (
-                                value.buyer === currentUser._id ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Waiting for consideration from the vendor</p>
-                                    </div>
-                                ) : (
+                        </div>{renderFooterModal()}
+                        {/* {
+                            // Vendor Side
+                            value.buyer !== currentUser._id ? (
+                                // status = under consideration
+                                value.status === "under consideration" ? (
                                     <div className='w-full flex items-center justify-between'>
                                         <Button 
                                         className='w-[49%] button-recolorable bg-red-600 hover:bg-red-700 text-white hover:text-white'
@@ -120,37 +274,112 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                                             Confirm
                                         </Button>
                                     </div>
+                                    // status = paid & item type = product
+                                ) : value.status === "paid" && itemType === "product" ?(
+                                    <div className='w-full'>
+                                        <Button 
+                                        className='w-full rounded-md bg-yellow-600 text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "packaging")}>
+                                            Packaging
+                                        </Button>
+                                    </div>
+                                    // status = paid & item type = packet or gear
+                                ) : value.status === "paid" && itemType === "packet" || itemType === "gear"?(
+                                    <div className='w-full'>
+                                        <Button 
+                                        className='w-full rounded-md bg-yellow-600 text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "installation")}>
+                                            Installation
+                                        </Button>
+                                    </div>
+                                    // status = packaging
+                                ) : value.status === "packaging" ?(
+                                    <div className='w-full'>
+                                        <Button 
+                                        className='w-full rounded-md bg-yellow-600 text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "shipping")}>
+                                            Shipping
+                                        </Button>
+                                    </div>
+                                    // status = confirm
+                                ) : value.status === "confirm" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Waiting for customer payment</p>
+                                    </div>
+                                    // status = rejected
+                                ) : value.status === "rejected" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-red-400'>This order was rejected</p>
+                                    </div>
+                                    // status = shipping | installation
+                                ) : value.status === "shipping" || value.status === "installation" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Waiting for customer confirmation</p>
+                                    </div>
+                                    // status = success
+                                ) : value.status === "success" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Order has been completed</p>
+                                    </div>
+                                    // status = no detect
+                                ) : (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>No status</p>
+                                    </div>
                                 )
-                            ) : value.status === "paid" && itemType === "gear" ?(
-                                <div className='w-full'>
-                                    <Button 
-                                    className='w-full rounded-md bg-yellow-600 text-white'
-                                    onClick={() => handleUpdateStatus(value._id, "shipping")}>
-                                        Shipping
-                                    </Button>
-                                </div>
-                            ) : value.status === "paid" && itemType === "packet" ?(
-                                <div className='w-full'>
-                                    <Button 
-                                    className='w-full rounded-md bg-yellow-600 text-white'
-                                    onClick={() => handleUpdateStatus(value._id, "installation")}>
-                                        Installation
-                                    </Button>
-                                </div>
-                            ) : value.status === "confirm" ? (
-                                <div className='w-full text-center'>
-                                    <p className='text-xs text-gray-400'>Waiting customer payment</p>
-                                </div>
-                            ) : value.status === "rejected" ? (
-                                <div className='w-full text-center'>
-                                    <p className='text-xs text-red-400'>This order was rejected</p>
-                                </div>
                             ) : (
-                                <div className='w-full text-center'>
-                                    <p className='text-xs text-gray-400'>Waiting customer confirmation</p>
-                                </div>
+                                // Client Side
+                                // status = confirm
+                                value.status === "confirm" ?(
+                                    <div className='w-full'>
+                                        <Button 
+                                        className='w-full rounded-md bg-yellow-600 text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "confirm")}>
+                                            Payment
+                                        </Button>
+                                    </div>
+                                    // status = installation | shipping
+                                ) : value.status === "installation" || value.status === "shipping"? (
+                                    <div className='w-full'>
+                                        <Button 
+                                        className='w-full rounded-md bg-yellow-600 text-white'
+                                        onClick={() => handleUpdateStatus(value._id, "success")}>
+                                            Success
+                                        </Button>
+                                    </div>
+                                    // status = paid
+                                ) : value.status === "paid" ?(
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Waiting for progress from vendor</p>
+                                    </div>
+                                    // status = under consideration
+                                ) : value.status === "under consideration" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Waiting for vendor confirmation</p>
+                                    </div>
+                                    // status = rejected
+                                ) : value.status === "rejected" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-red-400'>This order was rejected</p>
+                                    </div>
+                                    // status = packaging
+                                ) : value.status === "packaging" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Orders are being prepared</p>
+                                    </div>
+                                    // status = success
+                                ) : value.status === "success" ? (
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>Order has been completed</p>
+                                    </div>
+                                ) : (
+                                    // status = no detect
+                                    <div className='w-full text-center'>
+                                        <p className='text-xs text-gray-400'>No status</p>
+                                    </div>
+                                )
                             )
-                        }
+                        } */}
                     </div>
                 </div>
             )}

@@ -63,7 +63,7 @@ export async function getAllTransactions() {
 }
 
 // Get all items by organizer
-export async function getAllItemsByOrganizer(organizerId: string) {
+export async function getAllTransactionsByItemsOrganizer(organizerId: string) {
   try {
     await connectToDatabase();
 
@@ -102,9 +102,8 @@ export async function getTransactionByBuyerId(buyerId: string) {
       await connectToDatabase();
   
       // Query to get all items by buyer ID
-      const items = await populateItem(
-        Transaction.find({ buyer: buyerId })
-      );
+      const items = await Transaction.find({ buyer: buyerId })
+      .populate({ path: 'items', model: Item, select: '_id name organizer' })
   
       // If no items are found, log and throw an error
       if (!items || items.length === 0) {
