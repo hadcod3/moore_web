@@ -33,7 +33,7 @@ export async function POST(request: Request) {
             const itemDetails = {
                 _id: itemId,
                 quantity: parseInt(metadata?.quantities?.split(',')[index] || '0'), // Get quantity from metadata
-                price: parseInt(metadata?.prices?.split(',')[index] || '0'), // Get price from metadata
+                totalAmount: parseInt(metadata?.prices?.split(',')[index] || '0'), // Get price from metadata
             };
             return itemDetails;
         });
@@ -53,8 +53,8 @@ export async function POST(request: Request) {
             buyer: buyerId,
             items: item._id,
             quantity: item.quantity,
-            price: item.price,
-            totalAmount: item.quantity * item.price,
+            price: ((item.totalAmount / item.quantity) / 100),
+            totalAmount: (item.totalAmount/100),
             shippingAddress,
             status: 'paid',
             forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
