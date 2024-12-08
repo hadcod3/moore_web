@@ -58,6 +58,8 @@ export type CreateCheckoutParams = {
     itemsOrder: {
         _id: string
         name: string
+        quantity: number
+        price: number
         totalAmountPerItem: number
     }[];
     shipmentCost: number;

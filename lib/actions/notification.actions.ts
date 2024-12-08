@@ -3,6 +3,7 @@
 import { connectToDatabase } from '@/lib/database'  
 import Notification from '../database/models/notification.model'
 
+// FIXIT rebuild to, from, massage only
 export async function createNotification(notificationData: {
   to: string;
   from: { _id: string; name: string; imageUrl: string };

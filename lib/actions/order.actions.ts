@@ -41,7 +41,9 @@ export const checkoutOrder = async (order: CreateCheckoutParams) => {
           },
         ],
           metadata: {
-              itemId: order.itemsOrder.map((item) => item._id).join(','), // Joining item IDs as a string
+              itemId: order.itemsOrder.map((item) => item._id).join(','),
+              quantities: order.itemsOrder.map((item) => item.quantity).join(','), 
+              prices: order.itemsOrder.map((item) => item.price).join(','),
               buyerId: order.buyer.toString(),
               shippingAddress: JSON.stringify(order.shippingAddress),
               forDate: order.forDate.toISOString(),

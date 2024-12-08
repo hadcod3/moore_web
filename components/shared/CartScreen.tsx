@@ -40,7 +40,6 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
             return acc;
         }, {} as Record<string, boolean>)
     );
-    console.log(selectedItems)
 
     const [updatedCartContent, setUpdatedCartContent] = useState(cartContent);
 
@@ -76,26 +75,12 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
             );
             toast.success('Remove successfully!', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
             });
             console.log(`Deleted item with ID: ${selectedItemId}`);
         } catch (error) {
             console.error(`Error deleting item with ID: ${selectedItemId}`, error);
             toast.error('Failed to delete the item. Please try again.', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
             });
         }
     };
@@ -165,12 +150,14 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
             itemsOrder: selectedCartItems.map((item) => ({
                 _id: item.itemDetails._id,
                 name: item.itemDetails.name,
-                totalAmountPerItem: item.quantity * item.totalAmount
+                quantity: item.quantity, 
+                price: item.totalAmount, 
+                totalAmountPerItem: item.quantity * item.totalAmount,  
             })),
             shipmentCost, 
             shippingAddress: addressShipping, 
             createdAt: new Date(),
-            forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // Current time + 2 days for Product
+            forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), 
         };
     
         try {
@@ -178,13 +165,7 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
             console.log(order,"checkout order")
             toast.success('Checkout Success!', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                
             });
         } catch (error) {
             console.error('Error during checkout:', error); 

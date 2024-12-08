@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose'
-
+// FIXIT
 export interface INotification extends Document { 
     _id: string;
     to: string;

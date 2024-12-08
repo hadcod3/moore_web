@@ -15,13 +15,7 @@ const Checkout = ({ item, buyerId }: { item: IItem, buyerId: string}) => {
         if (existingCartItem) {
             toast.info('Item is already in your cart!', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                
             });
         } else {
             const cart = await addItemToCart({
@@ -34,13 +28,7 @@ const Checkout = ({ item, buyerId }: { item: IItem, buyerId: string}) => {
             console.log("add to cart items:",cart)
             toast.success('Item has been added to your cart!', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                
                 });
         }
     }

@@ -18,6 +18,8 @@ const OrderSchema = new Schema({
         {
             _id: { type: Schema.Types.ObjectId, ref: 'Item', required: true },
             name: { type: String },
+            quantity: { type: Number },
+            price: { type: Number },
             totalAmountPerItem: { type: Number },
         },
     ],

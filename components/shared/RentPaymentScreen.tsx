@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -24,7 +23,6 @@ import { cn } from '@/lib/utils';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { createTransactions } from '@/lib/actions/transaction.actions';
-import { ITransaction } from '@/lib/database/models/transaction.model';
 import { useRouter } from 'next/navigation';
 import { addressShippingEditSchema } from '@/lib/validator';
 
@@ -95,17 +93,17 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                 quantity,
                 price: item.price,
                 totalAmount: grandTotal,
-                shippingAddress: buyer.address,
+                shippingAddress: addressShipping,
                 status: 'under consideration',
                 forDate,
             };
 
             const createdTransaction = await createTransactions([transactionData] as any);
-            toast.success('Transaction created successfully!');
+            toast.success('Transaction created successfully!',{position:"bottom-right"});
             console.log('Created transaction:', createdTransaction);
         } catch (error) {
             console.error('Error creating transaction:', error);
-            toast.error('Failed to create transaction. Please try again.');
+            toast.error('Failed to create transaction. Please try again.',{position:"bottom-right"});
         }
 
         router.push("/profile")
@@ -283,7 +281,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                             <Button variant='outline' onClick={handleCancelEdit} className='w-[48%] button-recolorable bg-red-600 text-white hover:bg-red-700 hover:text-white'>
                                 Cancel
                             </Button>
-                            <Button onClick={handleSaveAddress} className='w-[48%] border border-gray-300 button'>
+                            <Button onClick={handleSaveAddress} className='w-[48%] button'>
                                 Save
                             </Button>
                         </div>
