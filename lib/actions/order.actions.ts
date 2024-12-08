@@ -22,7 +22,7 @@ export const checkoutOrder = async (order: CreateCheckoutParams) => {
           ...order.itemsOrder.map((item) => ({
             price_data: {
               currency: 'idr',
-              unit_amount: item.totalAmountPerItem,
+              unit_amount: item.price * 100,
               product_data: {
                 name: item.name,
               },
@@ -43,7 +43,7 @@ export const checkoutOrder = async (order: CreateCheckoutParams) => {
           metadata: {
               itemId: order.itemsOrder.map((item) => item._id).join(','),
               quantities: order.itemsOrder.map((item) => item.quantity).join(','), 
-              prices: order.itemsOrder.map((item) => item.price).join(','),
+              prices: order.itemsOrder.map((item) => (item.price * 100)).join(','), // price per item
               buyerId: order.buyer.toString(),
               shippingAddress: JSON.stringify(order.shippingAddress),
               forDate: order.forDate.toISOString(),
