@@ -32,8 +32,8 @@ export async function POST(request: Request) {
         const itemsOrder = itemIds.map((itemId: string, index: number) => {
             const itemDetails = {
                 _id: itemId,
-                quantity: parseInt(metadata?.quantities?.split(',')[index] || '0'), // Get quantity from metadata
-                totalAmount: parseInt(metadata?.prices?.split(',')[index] || '0'), // Get price from metadata
+                quantity: parseInt(metadata?.quantities?.split(',')[index] || '0'), 
+                totalAmount: parseInt(metadata?.prices?.split(',')[index] || '0'), 
             };
             return itemDetails;
         });
@@ -53,8 +53,8 @@ export async function POST(request: Request) {
             buyer: buyerId,
             items: item._id,
             quantity: item.quantity,
-            price: ((item.totalAmount / item.quantity) / 100),
-            totalAmount: (item.totalAmount/100),
+            price: (item.totalAmount / item.quantity),
+            totalAmount: item.totalAmount,
             shippingAddress,
             status: 'paid',
             forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
