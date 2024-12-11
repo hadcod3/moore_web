@@ -4,7 +4,8 @@ import Link from 'next/link'
 import React from 'react'
 import { getUserById } from '@/lib/actions/user.actions'
 import Image from 'next/image'
-import { MdAlternateEmail,MdLocationPin } from "react-icons/md";
+import { MdAlternateEmail } from "react-icons/md";
+import { RxSewingPin } from "react-icons/rx";
 import { getItemsByOrganizerId } from '@/lib/actions/item.actions'
 import Collection from '@/components/shared/Collection'
 import { TbTransform } from "react-icons/tb";
@@ -87,10 +88,12 @@ const Profile = async () => {
                                     <MdAlternateEmail size={20} />
                                     <h5 className='h5-medium text-base font-medium'>{profile.email}</h5>
                                 </div>
+                                {profile.city && (
                                 <div className='flex gap-1 items-center'>
-                                    <MdLocationPin size={20} />
+                                    <RxSewingPin size={20} />
                                     <h5 className='h5-medium text-base font-medium'>{profile.city}</h5>
                                 </div>
+                                )}
                             </div>
                         </div>
                         <div className='flex space-x-3'>

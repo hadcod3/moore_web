@@ -2,11 +2,16 @@
 
 import { connectToDatabase } from '@/lib/database'  
 import Notification from '../database/models/notification.model'
+import User from '../database/models/user.model'
 
-// FIXIT rebuild to, from, massage only
+const populateNotification = (query: any) => {
+  return query
+  .populate({ path: 'from', model: User, select: '_id name photo' })
+}
+
 export async function createNotification(notificationData: {
   to: string;
-  from: { _id: string; name: string; imageUrl: string };
+  from: string;
   message: string;
 }) {
   try {
@@ -36,7 +41,7 @@ export async function getNotificationByToId(id: string) {
       await connectToDatabase();
   
       // Query to get all items by buyer ID
-      const notifications = await Notification.find({ to: id });
+      const notifications = await populateNotification(Notification.find({ to: id }));
 
       // If no items are found, log and throw an error
       if (!notifications || notifications.length === 0) {

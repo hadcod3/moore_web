@@ -299,7 +299,6 @@ export type Gear = {
 export type CreateVendorPermitParams = {
     _id: string
     isVendor: boolean
-
 }
 
 // ==========================================================================

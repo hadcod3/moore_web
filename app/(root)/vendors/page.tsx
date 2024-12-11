@@ -2,7 +2,7 @@ import Search from "@/components/shared/Search"
 import { getAllVendors } from "@/lib/actions/user.actions"
 import { SearchParamProps } from "@/types"
 import Image from "next/image"
-import { MdLocationPin } from "react-icons/md";
+import { RxSewingPin } from "react-icons/rx";
 import { IUser } from "@/lib/database/models/user.model"
 import { getItemsByOrganizerId } from "@/lib/actions/item.actions";
 import Link from "next/link";
@@ -62,7 +62,7 @@ const Vendors = async ({ searchParams }: SearchParamProps) => {
                                     className="object-contain object-center w-16 h-16 aspect-square rounded-full overflow-hidden"
                                 />
                                 <h1 className="text-base font-semibold line-clamp-1">{vendor.firstName} {vendor.lastName}</h1>
-                                <div className="flex flex-row items-center line-clamp-1"><MdLocationPin size={14} /><p className="text-xs ">{vendor.city}</p></div>
+                                <div className="flex flex-row items-center line-clamp-1"><RxSewingPin size={14} /><p className="text-xs ">{vendor.city}</p></div>
                                 <div className="h-20 flex justify-center items-center">
                                     <div className="flex flex-col px-4 items-center">
                                         <h1 className="text-sm">{packetCount}</h1>

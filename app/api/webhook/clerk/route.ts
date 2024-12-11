@@ -51,14 +51,11 @@ export async function POST(req: Request) {
   }
  
   // Get the ID and type
-  const { id } = evt.data;
   const eventType = evt.type;
  
   if(eventType === 'user.created') {
 
-    // const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
-
-    const { id, email_addresses, image_url, first_name, last_name, username, create_organization_enabled, created_at, updated_at } = evt.data;
+    const { id, email_addresses, image_url, first_name, last_name, username, created_at, updated_at } = evt.data;
 
     const user = {
       clerkId: id,
@@ -69,7 +66,7 @@ export async function POST(req: Request) {
       photo: image_url,
       created_at: created_at,
       updated_at: updated_at,
-      isVendor: create_organization_enabled
+      isVendor: false
     }
 
     const newUser = await createUser(user);

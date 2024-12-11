@@ -8,6 +8,7 @@ import { formatDateTime } from '@/lib/utils'
 import { updateTransactionStatus } from '@/lib/actions/transaction.actions'
 import { createNotification } from '@/lib/actions/notification.actions'
 import { IUser } from '@/lib/database/models/user.model'
+import { toast } from 'react-toastify'
 
 interface TransactionModalProps {
     value: ITransaction
@@ -31,17 +32,33 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
             let notificationMessage = "";
             if (status === "rejected") {
                 notificationMessage = "Sorry, your transaction has been rejected.";
+                toast.success('Order successfully rejected',{position: "bottom-right",});
             } else if (status === "confirm") {
                 notificationMessage = "Your transaction has been confirmed, please make payment immediately.";
+                toast.success('Order successfully confirmed',{position: "bottom-right",});
+            } else if (status === "paid") {
+                notificationMessage = "Your payment has been received. We will process your order soon!";
+                toast.success('Order successfully paid',{position: "bottom-right",});
+            } else if (status === "packaging") {
+                notificationMessage = "Your order is being packaged and will be ready for shipping shortly.";
+                toast.success('Order in progress',{position: "bottom-right",});
+            } else if (status === "shipping") {
+                notificationMessage = "Good news! Your order is on the way.";
+                toast.success('Order fly high!',{position: "bottom-right",});
+            } else if (status === "installation") {
+                notificationMessage = "Your order has arrived! Our team is preparing for installation.";
+                toast.success('Order are being loaded',{position: "bottom-right",});
+            } else if (status === "success") {
+                notificationMessage = "Your order is complete! Thank you for shopping with us.";
+                toast.success('Order successfully',{position: "bottom-right",});
+            } else {
+                notificationMessage = "Status not recognized. Please contact support for details.";
+                toast.error('no status detected',{position: "bottom-right",});
             }
                     
             await createNotification({
                 to: value.buyer, 
-                from: {
-                    _id: currentUser._id,
-                    name: (`${currentUser.firstName} ${currentUser.lastName}`),
-                    imageUrl: currentUser.photo,
-                },
+                from: currentUser._id,
                 message: notificationMessage,
             });
             console.log(`Notification sent for status: ${status}`);
@@ -256,131 +273,7 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                             <p className='text-sm text-gray-500'>Total Amount</p>
                             <h1 className='text-base font-medium'>Rp{value.totalAmount.toLocaleString("id-ID")}</h1>
                             <p className='text-xs text-gray-500'>{`+ shipment cost (10% from subtotal)`}</p>
-                        </div>{renderFooterModal()}
-                        {/* {
-                            // Vendor Side
-                            value.buyer !== currentUser._id ? (
-                                // status = under consideration
-                                value.status === "under consideration" ? (
-                                    <div className='w-full flex items-center justify-between'>
-                                        <Button 
-                                        className='w-[49%] button-recolorable bg-red-600 hover:bg-red-700 text-white hover:text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "rejected")}>
-                                            Reject
-                                        </Button>
-                                        <Button 
-                                        className='w-[49%] button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "confirm")}>
-                                            Confirm
-                                        </Button>
-                                    </div>
-                                    // status = paid & item type = product
-                                ) : value.status === "paid" && itemType === "product" ?(
-                                    <div className='w-full'>
-                                        <Button 
-                                        className='w-full rounded-md bg-yellow-600 text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "packaging")}>
-                                            Packaging
-                                        </Button>
-                                    </div>
-                                    // status = paid & item type = packet or gear
-                                ) : value.status === "paid" && itemType === "packet" || itemType === "gear"?(
-                                    <div className='w-full'>
-                                        <Button 
-                                        className='w-full rounded-md bg-yellow-600 text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "installation")}>
-                                            Installation
-                                        </Button>
-                                    </div>
-                                    // status = packaging
-                                ) : value.status === "packaging" ?(
-                                    <div className='w-full'>
-                                        <Button 
-                                        className='w-full rounded-md bg-yellow-600 text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "shipping")}>
-                                            Shipping
-                                        </Button>
-                                    </div>
-                                    // status = confirm
-                                ) : value.status === "confirm" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Waiting for customer payment</p>
-                                    </div>
-                                    // status = rejected
-                                ) : value.status === "rejected" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-red-400'>This order was rejected</p>
-                                    </div>
-                                    // status = shipping | installation
-                                ) : value.status === "shipping" || value.status === "installation" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Waiting for customer confirmation</p>
-                                    </div>
-                                    // status = success
-                                ) : value.status === "success" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Order has been completed</p>
-                                    </div>
-                                    // status = no detect
-                                ) : (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>No status</p>
-                                    </div>
-                                )
-                            ) : (
-                                // Client Side
-                                // status = confirm
-                                value.status === "confirm" ?(
-                                    <div className='w-full'>
-                                        <Button 
-                                        className='w-full rounded-md bg-yellow-600 text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "confirm")}>
-                                            Payment
-                                        </Button>
-                                    </div>
-                                    // status = installation | shipping
-                                ) : value.status === "installation" || value.status === "shipping"? (
-                                    <div className='w-full'>
-                                        <Button 
-                                        className='w-full rounded-md bg-yellow-600 text-white'
-                                        onClick={() => handleUpdateStatus(value._id, "success")}>
-                                            Success
-                                        </Button>
-                                    </div>
-                                    // status = paid
-                                ) : value.status === "paid" ?(
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Waiting for progress from vendor</p>
-                                    </div>
-                                    // status = under consideration
-                                ) : value.status === "under consideration" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Waiting for vendor confirmation</p>
-                                    </div>
-                                    // status = rejected
-                                ) : value.status === "rejected" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-red-400'>This order was rejected</p>
-                                    </div>
-                                    // status = packaging
-                                ) : value.status === "packaging" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Orders are being prepared</p>
-                                    </div>
-                                    // status = success
-                                ) : value.status === "success" ? (
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>Order has been completed</p>
-                                    </div>
-                                ) : (
-                                    // status = no detect
-                                    <div className='w-full text-center'>
-                                        <p className='text-xs text-gray-400'>No status</p>
-                                    </div>
-                                )
-                            )
-                        } */}
-                    </div>
+                        </div>{renderFooterModal()}</div>
                 </div>
             )}
             {/* <Checkout item={value} buyerId={buyerId}/> */}

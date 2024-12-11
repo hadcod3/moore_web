@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose'
-// FIXIT
+
 export interface INotification extends Document { 
     _id: string;
     to: string;
@@ -14,11 +14,7 @@ export interface INotification extends Document {
 
 const NotificationSchema = new Schema({
     to: { type: Schema.Types.ObjectId, ref: 'User' },
-    from: { 
-        _id: { type: Schema.Types.ObjectId, ref: 'User' },
-        name: { type: String, required: true },
-        imageUrl: { type: String, required: true }
-    },
+    from: { type: Schema.Types.ObjectId, ref: 'User' },
     massage: { type: String, required: true},
     createdAt: { type: Date, default: Date.now },
 })

@@ -12,7 +12,7 @@ import Item from '../database/models/item.model'
 export async function createUser(user: CreateUserParams) {
   try {
     await connectToDatabase()
-
+    user.isVendor = false;
     const newUser = await User.create(user)
     return JSON.parse(JSON.stringify(newUser))
   } catch (error) {

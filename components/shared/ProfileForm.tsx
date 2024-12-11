@@ -115,11 +115,7 @@ const ProfileForm = ({ userId, userData, isUpdate }: ProfileFormProps) => {
                         
                 await createNotification({
                     to: userId, 
-                    from: {
-                        _id: "665728b935e40bdd1e329870",
-                        name: "Moore",
-                        imageUrl: "https://utfs.io/f/3Dorr2QGMBZhREyG0rdhBrVTWjbJwQ45uLKRl8O7Adgn3yzs",
-                    },
+                    from: "6759c1c4e87d6ca7d0b61f81",
                     message: notificationMessage,
                 });
             }

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
             quantity: item.quantity,
             price: (item.totalAmount / item.quantity),
             totalAmount: item.totalAmount,
-            shippingAddress,
+            shippingAddress, // FIXIT output = ""xxxxx"" => "xxxxx"
             status: 'paid',
             forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
         }));
