@@ -46,7 +46,7 @@ export const checkoutOrder = async (order: CreateCheckoutParams, cart: string[])
             prices: order.itemsOrder.map((item) => (item.price * 100)).join(','), // price per item
             buyerId: order.buyer.toString(),
             shippingAddress: order.shippingAddress,
-            forDate: order.forDate.toISOString(),
+            forDate: order.forDate.toString(),
             cartId: cart?.join(','),
         },
         mode: 'payment',
