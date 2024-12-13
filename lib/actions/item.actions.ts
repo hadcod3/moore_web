@@ -292,3 +292,15 @@ export async function deleteCartItem({ id }: {id: string}) {
       handleError(error)
     }
 }
+
+// DELETE MANY
+export async function deleteManyCartItems({ ids }: { ids: string[] }) {
+  try {
+      await connectToDatabase();
+
+      const deletedItems = await Cart.deleteMany({ _id: { $in: ids } });
+  } catch (error) {
+      handleError(error);
+  }
+}
+

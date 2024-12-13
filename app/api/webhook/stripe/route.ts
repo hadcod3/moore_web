@@ -2,7 +2,7 @@ import stripe from 'stripe'
 import { NextResponse } from 'next/server'
 import { createOrder } from '@/lib/actions/order.actions'
 import { createTransactions } from '@/lib/actions/transaction.actions'
-import { ITransaction } from '@/lib/database/models/transaction.model'
+import { deleteManyCartItems } from '@/lib/actions/item.actions'
 
 export async function POST(request: Request) {
     const body = await request.text()
@@ -27,6 +27,7 @@ export async function POST(request: Request) {
         const { id, amount_total, metadata, } = event.data.object
         const buyerId = metadata?.buyerId || '';
         const itemIds = metadata?.itemId?.split(',') || [];
+        const cartIds = metadata?.cartId?.split(',') || [];
         const shippingAddress = metadata?.shippingAddress || '';
 
         const itemsOrder = itemIds.map((itemId: string, index: number) => {
@@ -55,15 +56,17 @@ export async function POST(request: Request) {
             quantity: item.quantity,
             price: (item.totalAmount / item.quantity),
             totalAmount: item.totalAmount,
-            shippingAddress, // FIXIT output = ""xxxxx"" => "xxxxx"
+            shippingAddress,
             status: 'paid',
             forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
         }));
-
+ 
         const newOrder = await createOrder(order)
         const newTransactions = await Promise.all(
             transactions.map(transaction => createTransactions([transaction] as any))
         );
+        // Delete cart items was checkout
+        const deleteCart = await deleteManyCartItems({ ids: cartIds });
         return NextResponse.json({ message: 'OK', order: newOrder, transactions: newTransactions  })
     }
 

@@ -24,7 +24,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { createTransactions } from '@/lib/actions/transaction.actions';
 import { useRouter } from 'next/navigation';
-import { addressShippingEditSchema } from '@/lib/validator';
+import { shippingAddressEditSchema } from '@/lib/validator';
 
 const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
     const router = useRouter();
@@ -34,7 +34,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
     const [shipmentCost, setShipmentCost] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
     const dateInputRef = useRef<HTMLInputElement | null>(null);
-    const [addressShipping, setAddressShipping] = useState(buyer.address);
+    const [shippingAddress, setShippingAddress] = useState(buyer.address);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tempAddress, setTempAddress] = useState(buyer.address);
 
@@ -57,11 +57,10 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
         setIsModalOpen(true);
     };
 
-  
     const handleSaveAddress = () => {
         try {
-            addressShippingEditSchema.parse({ addressShipping: tempAddress });
-            setAddressShipping(tempAddress); 
+            shippingAddressEditSchema.parse({ shippingAddress: tempAddress });
+            setShippingAddress(tempAddress); 
             setIsModalOpen(false);
             toast.success('Shipping address updated successfully!',{position: "bottom-right",});
         } catch (error: any) {
@@ -70,7 +69,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
     };
 
     const handleCancelEdit = () => {
-        setTempAddress(addressShipping);
+        setTempAddress(shippingAddress);
         setIsModalOpen(false);
     };
 
@@ -80,7 +79,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
             return;
         }
     
-        if (!addressShipping) {
+        if (!shippingAddress) {
             toast.error('Please provide a shipping address.',{position: "bottom-right",});
             return;
         }
@@ -93,7 +92,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                 quantity,
                 price: item.price,
                 totalAmount: grandTotal,
-                shippingAddress: addressShipping,
+                shippingAddress: shippingAddress,
                 status: 'under consideration',
                 forDate,
             };
@@ -219,7 +218,7 @@ const RentPaymentScreen = ({ item, buyer }: { item: IItem, buyer: IUser }) => {
                     <div className='flex flex-col gap-1'>
                         <h1 className='text-lg font-semibold'>Shipping Address</h1>
                         <div className='flex gap-2'>
-                            <Input type='text' disabled placeholder='Add shipping address' value={addressShipping} className='w-full input-field'/>
+                            <Input type='text' disabled placeholder='Add shipping address' value={shippingAddress} className='w-full input-field'/>
                             <Button onClick={handleEditAddress} className='h-[54px] min-w-[54px] button'>
                                 <Image
                                     src={"/assets/icons/edit_bw.svg"}

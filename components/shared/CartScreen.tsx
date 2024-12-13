@@ -20,16 +20,15 @@ import { IUser } from '@/lib/database/models/user.model';
 import { deleteCartItem, getItemById } from '@/lib/actions/item.actions';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import { addressShippingEditSchema } from '@/lib/validator';
+import { shippingAddressEditSchema } from '@/lib/validator';
 import { loadStripe } from '@stripe/stripe-js';
 import { checkoutOrder } from '@/lib/actions/order.actions';
-import { CreateCheckoutParams, CreateOrderParams } from '@/types';
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemDetails: any }>, buyer: IUser }) => {
     const [showModal, setShowModal] = useState(false);
-    const [addressShipping, setAddressShipping] = useState(buyer.address);
+    const [shippingAddress, setShippingAddress] = useState(buyer.address);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [tempAddress, setTempAddress] = useState(buyer.address);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -107,8 +106,8 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
   
     const handleSaveAddress = () => {
         try {
-            addressShippingEditSchema.parse({ addressShipping: tempAddress });
-            setAddressShipping(tempAddress); 
+            shippingAddressEditSchema.parse({ shippingAddress: tempAddress });
+            setShippingAddress(tempAddress); 
             setIsModalOpen(false);
             toast.success('Shipping address updated successfully!',{position: "bottom-right",});
         } catch (error: any) {
@@ -117,7 +116,7 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
     };
 
     const handleCancelEdit = () => {
-        setTempAddress(addressShipping);
+        setTempAddress(shippingAddress);
         setIsModalOpen(false);
     };
 
@@ -155,13 +154,15 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                 totalAmountPerItem: item.totalAmount,  
             })),
             shipmentCost, 
-            shippingAddress: addressShipping, 
+            shippingAddress: shippingAddress, 
             createdAt: new Date(),
             forDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), 
         };
+
+        const cart = selectedCartItems.map((cart) => cart._id);
     
         try {
-            await checkoutOrder(order); 
+            await checkoutOrder(order, cart); 
             console.log(order,"checkout order")
             toast.success('Checkout Success!', {
                 position: "bottom-right",
@@ -294,7 +295,7 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
                                 type="text"
                                 placeholder="Add shipping address"
                                 disabled
-                                value={addressShipping}
+                                value={shippingAddress}
                                 className="w-full input-field"
                             />
                             <Button onClick={handleEditAddress} className="h-[54px] min-w-[54px] button">
