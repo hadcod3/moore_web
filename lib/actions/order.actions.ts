@@ -1,7 +1,7 @@
 "use server"
 
 import Stripe from 'stripe';
-import { CreateCheckoutParams, CreateOrderParams, GetOrdersByItemParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
+import { CreateCheckoutParams, CreateOrderParams, CreateRentPaymentParams, GetOrdersByItemParams, GetOrdersByPacketParams, GetOrdersByUserParams } from "@/types"
 import { redirect } from 'next/navigation';
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
@@ -42,6 +42,7 @@ export const checkoutOrder = async (order: CreateCheckoutParams, cart: string[])
       ],
         metadata: {
             itemId: order.itemsOrder.map((item) => item._id).join(','),
+            itemName: order.itemsOrder.map((item) => item.name).join(','),
             quantities: order.itemsOrder.map((item) => item.quantity).join(','), 
             prices: order.itemsOrder.map((item) => (item.price * 100)).join(','), // price per item
             buyerId: order.buyer.toString(),
@@ -50,13 +51,67 @@ export const checkoutOrder = async (order: CreateCheckoutParams, cart: string[])
             cartId: cart?.join(','),
         },
         mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
+        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/transaction`,
         cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
     });
     redirect(session.url!);
   } catch (error) {
       console.error('Error during checkout:', error);
       throw error; // Rethrow error if needed
+  }
+};
+
+export const rentPayment = async (order: CreateRentPaymentParams, transactionId: string) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
+  const shipmentCost = order.shipmentCost * 100;
+
+  try {
+    // Create a Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: 'idr',
+            unit_amount: order.itemsOrder.price * 100,
+            product_data: {
+              name: order.itemsOrder.name,
+            },
+          },
+          quantity: order.itemsOrder.quantity,
+        },
+        {
+          price_data: {
+            currency: 'idr',
+            unit_amount: shipmentCost,
+            product_data: {
+              name: 'Shipment Cost',
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        itemId: order.itemsOrder._id,
+        itemName: order.itemsOrder.name,
+        quantity: order.itemsOrder.quantity.toString(),
+        price: (order.itemsOrder.price * 100).toString(),
+        buyerId: order.buyer,
+        shippingAddress: order.shippingAddress,
+        forDate: order.forDate.toISOString(),
+        createdAt: order.createdAt.toISOString(),
+        transactionId
+      },
+      mode: 'payment',
+      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/transaction`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/payment/${transactionId}`,
+    });
+
+    // Redirect to the Stripe session URL
+    redirect(session.url!);
+  } catch (error) {
+    console.error('Error during rent payment:', error);
+    throw new Error('Failed to process rent payment');
   }
 };
 

@@ -67,6 +67,21 @@ export type CreateCheckoutParams = {
     createdAt: Date;
     forDate: Date;
 }
+export type CreateRentPaymentParams = {
+    buyer: string;
+    itemsOrder: {
+        _id: string
+        name: string
+        quantity: number
+        price: number
+        totalAmountPerItem: number
+    };
+    shipmentCost: number;
+    shippingAddress: string;
+    createdAt: Date;
+    forDate: Date;
+}
+
 export type CreateOrderParams = {
     stripeId: string;
     buyer: string;

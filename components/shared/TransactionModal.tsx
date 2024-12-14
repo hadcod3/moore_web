@@ -9,6 +9,7 @@ import { updateTransactionStatus } from '@/lib/actions/transaction.actions'
 import { createNotification } from '@/lib/actions/notification.actions'
 import { IUser } from '@/lib/database/models/user.model'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 interface TransactionModalProps {
     value: ITransaction
@@ -23,6 +24,7 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
     const handleModal = () => {
         setModalView(true)
     }
+    const router = useRouter();
 
     const handleUpdateStatus = async (itemId: string, status: string) => {
         try {
@@ -167,7 +169,7 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                         <div className="w-full">
                             <Button
                                 className="w-full button-recolorable bg-green-600 hover:bg-green-700 text-white hover:text-white"
-                                onClick={() => handleUpdateStatus(value._id, "paid")}
+                                onClick={() => router.push(`/payment/${value._id}`)}
                             >
                                 Payment
                             </Button>

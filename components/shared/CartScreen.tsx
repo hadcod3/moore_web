@@ -119,7 +119,6 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
         setTempAddress(shippingAddress);
         setIsModalOpen(false);
     };
-
     
     useEffect(() => {
         // Check to see if this is a redirect back from Checkout
@@ -164,10 +163,6 @@ const CartScreen = ({ cartContent, buyer }: { cartContent: Array<ICart & { itemD
         try {
             await checkoutOrder(order, cart); 
             console.log(order,"checkout order")
-            toast.success('Checkout Success!', {
-                position: "bottom-right",
-                
-            });
         } catch (error) {
             console.error('Error during checkout:', error); 
         }

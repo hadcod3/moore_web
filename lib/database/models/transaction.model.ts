@@ -6,8 +6,12 @@ export interface ITransaction extends Document {
     paymentId?: string;
     buyer: string;
     items: {
-        _id: string,
-        name: string,
+        _id: string;
+        name: string;
+        createdAt: Date;
+        imageUrl: string;
+        price: number;
+        stock: number; 
     }
     productData?: IItem;
     quantity: number;

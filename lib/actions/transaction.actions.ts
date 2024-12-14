@@ -8,7 +8,29 @@ import Transaction, { ITransaction } from '../database/models/transaction.model'
 const populateItem = (query: any) => {
     return query
     .populate({ path: 'buyer', model: User, select: '_id firstName lastName' })
-    .populate({ path: 'items', model: Item, select: '_id name organizer' })
+    .populate({ path: 'items', model: Item })
+}
+
+export async function getTransactionById(id: string) {
+  try {
+    await connectToDatabase();
+
+    const transaction = await populateItem(
+      Transaction.findById(id)
+    );
+
+    if (!transaction) {
+      console.log(`No transaction found with ID: ${id}`);
+    }
+
+    return JSON.parse(JSON.stringify(transaction));
+  } catch (error) {
+    console.error(`Error fetching transaction by ID (${id}):`, error);
+    if (error instanceof Error) {
+      console.error(error.stack); // Log detailed error stack for further insights
+    }
+    throw new Error('Failed to fetch transaction by ID');
+  }
 }
 
 export async function createTransactions(transactionsData: Omit<ITransaction, '_id' | 'createdAt' | 'updatedAt'>[]) {
