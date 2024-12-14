@@ -122,7 +122,7 @@ const RentPaymentScreen = ({ item, buyer, isConfirm }: { item: IItem | ITransact
                 price: (item as ITransaction).price, 
                 totalAmountPerItem: (item as ITransaction).totalAmount,
             },
-            shipmentCost, 
+            shipmentCost: (((item as ITransaction).quantity * (item as ITransaction).price) * 0.1), 
             shippingAddress: (item as ITransaction).shippingAddress, 
             createdAt: new Date(),
             forDate: (item as ITransaction).forDate, 
@@ -450,7 +450,7 @@ const RentPaymentScreen = ({ item, buyer, isConfirm }: { item: IItem | ITransact
                         <p className='text-gray-400'>Grand total</p>
                         <p className='font-semibold'>Rp{(item as ITransaction).totalAmount.toLocaleString('id-ID')}</p>
                     </div>
-                    <form action={() => console.log("pay button")} method='post'>
+                    <form action={onPay} method='post'>
                         <Button
                             type='submit'
                             role="link"

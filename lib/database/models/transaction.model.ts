@@ -12,7 +12,7 @@ export interface ITransaction extends Document {
         imageUrl: string;
         price: number;
         stock: number; 
-    }
+    };
     productData?: IItem;
     quantity: number;
     price: number;

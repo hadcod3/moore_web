@@ -15,9 +15,8 @@ export async function getTransactionById(id: string) {
   try {
     await connectToDatabase();
 
-    const transaction = await populateItem(
-      Transaction.findById(id)
-    );
+    const transaction = await Transaction.findById(id)
+    .populate({ path: 'items', model: Item })
 
     if (!transaction) {
       console.log(`No transaction found with ID: ${id}`);

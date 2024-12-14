@@ -94,12 +94,12 @@ export const rentPayment = async (order: CreateRentPaymentParams, transactionId:
       metadata: {
         itemId: order.itemsOrder._id,
         itemName: order.itemsOrder.name,
-        quantity: order.itemsOrder.quantity.toString(),
-        price: (order.itemsOrder.price * 100).toString(),
+        quantities: order.itemsOrder.quantity,
+        prices: (order.itemsOrder.price * 100),
         buyerId: order.buyer,
         shippingAddress: order.shippingAddress,
-        forDate: order.forDate.toISOString(),
-        createdAt: order.createdAt.toISOString(),
+        forDate: order.forDate.toString(),
+        createdAt: order.createdAt.toString(),
         transactionId
       },
       mode: 'payment',
@@ -111,7 +111,7 @@ export const rentPayment = async (order: CreateRentPaymentParams, transactionId:
     redirect(session.url!);
   } catch (error) {
     console.error('Error during rent payment:', error);
-    throw new Error('Failed to process rent payment');
+    throw error;
   }
 };
 
