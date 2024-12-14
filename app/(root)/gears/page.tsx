@@ -18,6 +18,8 @@ const Gears = async ({ searchParams }: SearchParamProps) => {
         limit: 15
     })
 
+    console.log(gears, "gears")
+
     return (
         <section className="wrapper my-8 flex flex-col md:gap-12">
             <div className="flex w-full flex-col gap-5 py-5 md:flex-row">

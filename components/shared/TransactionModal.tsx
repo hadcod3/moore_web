@@ -10,6 +10,7 @@ import { createNotification } from '@/lib/actions/notification.actions'
 import { IUser } from '@/lib/database/models/user.model'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { BsInfoLg } from 'react-icons/bs'
 
 interface TransactionModalProps {
     value: ITransaction
@@ -231,7 +232,8 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
         <div className="flex items-center gap-3">
             <button onClick={handleModal}>
                 <div className="button p-3">
-                    <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
+                    {/* <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} /> */}
+                    <BsInfoLg size={20} />
                 </div>
             </button>
 

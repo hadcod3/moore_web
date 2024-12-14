@@ -44,14 +44,14 @@ const NotificationModal = ({ value } : NotificationModalProps) => {
                             <>
                             <div className="flex gap-x-3 pb-3 mb-2 border-b border-gray-200">
                                 <Image
-                                src={selectedNotification.from.imageUrl}
+                                src={selectedNotification.from.photo}
                                 alt="sender ava"
                                 width={100}
                                 height={100}
                                 className="rounded-3xl w-16 h-16 object-cover object-center"
                                 />
                                 <div>
-                                <h1 className="font-semibold text-lg">{selectedNotification.from.name}</h1>
+                                <h1 className="font-semibold text-lg">{selectedNotification.from.firstName} {selectedNotification.from.lastName}</h1>
                                 <p className="text-gray-400 text-sm italic">
                                     {formatDateTime(selectedNotification.createdAt)}
                                 </p>
@@ -80,14 +80,14 @@ const NotificationModal = ({ value } : NotificationModalProps) => {
                                         }`}
                                         >
                                             <Image
-                                                src={data.from.imageUrl}
+                                                src={data.from.photo}
                                                 alt="sender ava"
                                                 width={100}
                                                 height={100}
                                                 className="rounded-2xl w-12 h-12 object-cover object-center border border-gray-100"
                                             />
                                             <div className='flex flex-col text-left'>
-                                                <h1 className='line-clamp-1 text-sm font-medium'>{data.from.name}</h1>
+                                                <h1 className='line-clamp-1 text-sm font-medium'>{data.from.firstName} {data.from.lastName}</h1>
                                                 <p className='line-clamp-1 text-xs'>{data.massage}</p>
                                                 <p className='line-clamp-1 text-[8px]'>{formatDateTime(data.createdAt)}</p>
                                             </div>

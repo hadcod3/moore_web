@@ -20,7 +20,7 @@ export default function RootLayout({
         return (
         <div className="flex h-screen flex-col">
             <Header/>
-            <main className="flex-1 pt-[75px]">{children}</main>
+            <main className="flex-1 pt-[75px] w-screen">{children}</main>
             {/* <Footer/> */}
             <ToastContainer/>
         </div>

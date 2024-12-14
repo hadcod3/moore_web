@@ -5,8 +5,9 @@ export interface INotification extends Document {
     to: string;
     from: {
         _id: string,
-        name: string,
-        imageUrl: string
+        firstName: string,
+        lastName: string,
+        photo: string
     };
     massage: string;
     createdAt: string;

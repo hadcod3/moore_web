@@ -6,7 +6,7 @@ import User from '../database/models/user.model'
 
 const populateNotification = (query: any) => {
   return query
-  .populate({ path: 'from', model: User, select: '_id name photo' })
+  .populate({ path: 'from', model: User, select: '_id firstName lastName photo' })
 }
 
 export async function createNotification(notificationData: {
@@ -41,7 +41,8 @@ export async function getNotificationByToId(id: string) {
       await connectToDatabase();
   
       // Query to get all items by buyer ID
-      const notifications = await populateNotification(Notification.find({ to: id }));
+      const notifications = await populateNotification(Notification.find({ to: id }))
+
 
       // If no items are found, log and throw an error
       if (!notifications || notifications.length === 0) {

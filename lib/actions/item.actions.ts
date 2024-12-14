@@ -130,13 +130,13 @@ export async function getItemsByTypeId({ typeId, query, category, limit, page }:
       // Connect to the database
       await connectToDatabase();
 
-      const titleCondition = query ? { title: { $regex: query, $options: 'i' } } : {}
+      const titleCondition = query ? { name: { $regex: query, $options: 'i' } } : {}
       const categoryCondition = category ? await getCategoryByName(category) : null
       const conditions = {
           $and: [
               { type: typeId },
               titleCondition,
-              // { category: categoryCondition._id },
+              categoryCondition ? { category: categoryCondition._id } : {}
           ]
       };
 
@@ -152,7 +152,6 @@ export async function getItemsByTypeId({ typeId, query, category, limit, page }:
       // If no items are found, throw an error
       if (!items || items.length === 0) {
           console.log('No items found for typeId:', typeId);
-          throw new Error('No items found for the specified type');
       }
 
       return {
