@@ -3,12 +3,12 @@ import { z } from "zod"
 
 export const itemFormSchema = z.object({
     type: z.string(),
-    name: z.string().min(2, 'Title must be at least 3 characters')
+    name: z.string().min(3, 'Title must be at least 3 characters')
     .regex(/^(?!\d+$)[a-zA-Z0-9\s]+$/, {
       message: "Name cannot contain numbers only and can include letters, numbers, and spaces",
     }),
     description: z.string()
-    .min(3, 'Description must be at least 3 characters')
+    .min(10, 'Description must be at least 10 characters')
     .max(1000, 'Description must be less than 1000 characters')
     .regex(/^(?!\d+$)[a-zA-Z0-9\s]+$/, {
       message: "Description cannot contain numbers only and can include letters, numbers, and spaces",

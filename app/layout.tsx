@@ -42,4 +42,6 @@ export default function RootLayout({
             </html>
         </ClerkProvider>
     );
+    
+    // FIXIT SET DYNAMICALLY STOCK WHEN USER PURCHASE ITEM AND CREATE FALLBACK WHEN OUT OF STOCK
 }

@@ -1,7 +1,6 @@
 'use client'
 import Image from "next/image"
 import { RxSewingPin } from "react-icons/rx";
-import Link from "next/link";
 import { IUser } from "@/lib/database/models/user.model";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
