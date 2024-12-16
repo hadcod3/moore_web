@@ -2,13 +2,14 @@ import React from 'react'
 import AbandonedPage from '@/components/shared/AbandonedPage'
 import { getItemById } from '@/lib/actions/item.actions';
 import { SearchParamProps } from '@/types';
-import { getCurrentUserId } from '@/lib/utils_server';
 import RentPaymentScreen from '@/components/shared/RentPaymentScreen';
 import { getUserById } from '@/lib/actions/user.actions';
 import { getTransactionById } from '@/lib/actions/transaction.actions';
+import { auth } from '@clerk/nextjs';
 
 const PaymentScreen = async ({ params: { id }, searchParams }: SearchParamProps) => {
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     const profile = await getUserById(userId as string);
     
     let isConfirm = false

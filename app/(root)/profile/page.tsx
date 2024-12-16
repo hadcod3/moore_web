@@ -15,7 +15,6 @@ import { BsClipboardCheck } from 'react-icons/bs'
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableOrders from '@/components/shared/TableOrders'
 import { getTransactionByBuyerId } from '@/lib/actions/transaction.actions'
-import { getCurrentUserId } from '@/lib/utils_server'
 import { getNotificationByToId } from '@/lib/actions/notification.actions'
 import NotificationModal from '@/components/shared/NotificationModal'
 import { HiOutlinePlus } from 'react-icons/hi2'
@@ -26,10 +25,11 @@ import {
     TooltipTrigger,
   } from "@/components/ui/tooltip"
 import UpdateProfile from '@/components/shared/UpdateProfile'
+import { auth } from '@clerk/nextjs'
 
 const Profile = async () => {
-
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     const profile : IUser = await getUserById(userId as string);
     const notificationData = await getNotificationByToId(userId as string)
     

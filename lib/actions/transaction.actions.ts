@@ -103,16 +103,11 @@ export async function getAllTransactionsByItemsOrganizer(organizerId: string) {
 
     if (!filteredTransactions || filteredTransactions.length === 0) {
       console.log('No transactions found for the given organizer');
-      throw new Error('No transactions available for this organizer');
     }
 
     return JSON.parse(JSON.stringify(filteredTransactions));
   } catch (error) {
     console.error('Error fetching transactions by organizer:', error);
-    if (error instanceof Error) {
-      console.error(error.stack); // Log detailed error stack for further insights
-    }
-    throw new Error('Failed to fetch transactions for this organizer');
   }
 }
 

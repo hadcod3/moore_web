@@ -1,15 +1,14 @@
 
 import TableOrders from "@/components/shared/TableOrders"
-import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { getAllTransactionsByItemsOrganizer, getAllTransactions } from "@/lib/actions/transaction.actions"
-import { getCurrentUserId } from "@/lib/utils_server"
+import { auth } from "@clerk/nextjs"
 import Link from "next/link"
 import { IoIosArrowRoundBack } from "react-icons/io"
-import { IoArrowBack } from "react-icons/io5"
 
 const OrderScreen = async () => {
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     let transactionData = await getAllTransactionsByItemsOrganizer(userId as string)
  
     return (

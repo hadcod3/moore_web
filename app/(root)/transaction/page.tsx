@@ -1,17 +1,15 @@
 
 import TableOrders from "@/components/shared/TableOrders"
-import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { getAllTransactions, getTransactionByBuyerId } from "@/lib/actions/transaction.actions"
-import { getCurrentUserId } from "@/lib/utils_server"
+import { getTransactionByBuyerId } from "@/lib/actions/transaction.actions"
+import { auth } from "@clerk/nextjs"
 import Link from "next/link"
-import { useState } from "react"
 import { IoIosArrowRoundBack } from "react-icons/io"
-import { IoArrowBack } from "react-icons/io5"
 
 const TransactionScreen = async () => {
     
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     let transactionData = await getTransactionByBuyerId(userId as string)
  
     return (

@@ -7,8 +7,8 @@ import { TableCell, TableRow } from '../ui/table'
 import { IOrder } from '@/lib/database/models/order.model'
 import TransactionModal from './TransactionModal'
 import { getItemById } from '@/lib/actions/item.actions'
-import { getCurrentUserId } from '@/lib/utils_server'
 import { IUser } from '@/lib/database/models/user.model'
+import { auth } from '@clerk/nextjs'
 
 type TransactionProps = {
     data: ITransaction | IOrder 
@@ -17,7 +17,8 @@ type TransactionProps = {
 const TableItem = async ({ data, model } : TransactionProps) => {
     const userData = await getUserById((data as ITransaction).buyer)
     let itemType = await getItemById((data as ITransaction).items._id)
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     const currentUser : IUser = await getUserById(userId as string);
     itemType = itemType.type.name
 

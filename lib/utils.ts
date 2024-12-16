@@ -5,20 +5,11 @@ import { twMerge } from 'tailwind-merge'
 import qs from 'query-string'
 
 import { UrlQueryParams, RemoveUrlQueryParams } from '@/types'
-import { getItemsByOrganizerId } from './actions/item.actions'
-import { auth } from '@clerk/nextjs'
-import { useEffect } from 'react'
-import { getNotificationByToId } from './actions/notification.actions'
-import { getUserByClerkId } from './actions/user.actions'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const currentUser = (userId: string) => {
-  const data = getUserByClerkId(userId)
-  return data
-}
 
 export const formatDateTime = (dateString: string | Date): string => {
     const date = new Date(dateString);

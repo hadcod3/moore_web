@@ -1,14 +1,15 @@
 
 import React from 'react';
 import CartScreen from '@/components/shared/CartScreen';
-import { getCurrentUserId } from '@/lib/utils_server';
 import { getUserById } from '@/lib/actions/user.actions';
 import { fetchCartItemsByBuyerId } from '@/lib/actions/cart.actions';
 import { getItemById } from '@/lib/actions/item.actions';
 import { ICart } from '@/lib/database/models/cart.model';
+import { auth } from '@clerk/nextjs';
 
 const CartPage = async () => {
-    const userId = getCurrentUserId();
+    const { sessionClaims } = auth();
+    const userId = sessionClaims?.userId as string;
     const profile = await getUserById(userId as string);
     const cartItems = await fetchCartItemsByBuyerId(profile._id); 
 
