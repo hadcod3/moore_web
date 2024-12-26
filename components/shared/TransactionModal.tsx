@@ -18,7 +18,7 @@ interface TransactionModalProps {
     itemType: string
     currentUser: IUser
 }
-
+ 
 const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionModalProps) => {
     const [modalView, setModalView] = useState(false)
 
@@ -94,7 +94,8 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                         </div>
                     );
                 case "paid":
-                    if (itemType === "product") {
+                    // ID of product type
+                    if (itemType === "6717aa0a78fed7ee045a8403" ) {
                         return (
                             <div className="w-full">
                                 <Button
@@ -106,7 +107,8 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                             </div>
                         );
                     }
-                    if (itemType === "packet" || itemType === "gear") {
+                    // ID of packet type and ID of gear type
+                    if (itemType === "6717aa0a78fed7ee045a8402" || itemType === "6717aa0a78fed7ee045a8401") {
                         return (
                             <div className="w-full">
                                 <Button

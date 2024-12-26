@@ -88,23 +88,15 @@ export async function getAllTransactionsByItemsOrganizer(organizerId: string) {
   try {
     await connectToDatabase();
 
-    const transactions = await Transaction.find()
+    const transactions= await Transaction.find()
       .populate({
         path: 'items',
-        populate: {
-          path: 'organizer', 
-          match: { _id: organizerId } 
-        }
+        model: Item,
+        select: 'organizer name price',
       });
-
-    const filteredTransactions = transactions.filter(transaction => 
-      transaction.items.organizer && transaction.items.organizer._id.toString() === organizerId
-    );
-
-    if (!filteredTransactions || filteredTransactions.length === 0) {
-      console.log('No transactions found for the given organizer');
-    }
-
+      const filteredTransactions = transactions.filter(transaction => 
+        transaction.items && transaction.items.organizer?.toString() === organizerId
+      );
     return JSON.parse(JSON.stringify(filteredTransactions));
   } catch (error) {
     console.error('Error fetching transactions by organizer:', error);
@@ -119,7 +111,7 @@ export async function getTransactionByBuyerId(buyerId: string) {
   
       // Query to get all items by buyer ID
       const items = await Transaction.find({ buyer: buyerId })
-      .populate({ path: 'items', model: Item, select: '_id name organizer' })
+      .populate({ path: 'items', model: Item })
   
       // If no items are found, log and throw an error
       if (!items || items.length === 0) {

@@ -1,9 +1,7 @@
 import AbandonedPage from "@/components/shared/AbandonedPage";
 import ItemForm from "@/components/shared/ItemForm";
-import { Button } from "@/components/ui/button";
 import { getItemById } from "@/lib/actions/item.actions";
 import { auth } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 import { IoIosArrowRoundBack } from "react-icons/io";
 

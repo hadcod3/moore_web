@@ -16,12 +16,14 @@ type TransactionProps = {
 }
 const TableItem = async ({ data, model } : TransactionProps) => {
     const userData = await getUserById((data as ITransaction).buyer)
-    let itemType = await getItemById((data as ITransaction).items._id)
     const { sessionClaims } = auth();
     const userId = sessionClaims?.userId as string;
     const currentUser : IUser = await getUserById(userId as string);
-    itemType = itemType.type.name
-
+    let itemType = null;
+    if ((data as ITransaction).items?._id) {
+        const item = await getItemById((data as ITransaction).items._id);
+        itemType = item?.type || "Unknown Type";
+    }
     return (
         <>
             {model === "Order" ? (
@@ -55,7 +57,7 @@ const TableItem = async ({ data, model } : TransactionProps) => {
                     key={data._id}
                     className="p-regular-14 lg:p-regular-16 border-b "
                     style={{ boxSizing: 'border-box' }}>
-                    <TableCell><p className="text-secondary-300 max-w-[20ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{(data as ITransaction).items.name}</p></TableCell>
+                    <TableCell><p className="text-secondary-300 max-w-[20ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{(data as ITransaction).items?.name || "No Item Name"}</p></TableCell>
                     <TableCell className="text-secondary-300">{(data as ITransaction).quantity}</TableCell>
                     <TableCell className="text-secondary-300">{formatPrice((data as ITransaction).totalAmount)}</TableCell>
                     <TableCell ><p className="text-secondary-300 max-w-[20ch] overflow-x-auto whitespace-nowrap" style={{scrollbarWidth: 'none'}}>{(data as ITransaction).shippingAddress}</p></TableCell>

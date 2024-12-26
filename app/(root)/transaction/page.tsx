@@ -11,7 +11,6 @@ const TransactionScreen = async () => {
     const { sessionClaims } = auth();
     const userId = sessionClaims?.userId as string;
     let transactionData = await getTransactionByBuyerId(userId as string)
- 
     return (
         <>
             <div className="wrapper flex justify-between">

@@ -17,6 +17,7 @@ const TableOrders = ({
     emptyStateSubtext,
     model
   }: CollectionProps) => {
+
     return (
         <>
             {data.length > 0 ? (

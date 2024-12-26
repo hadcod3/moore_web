@@ -1,6 +1,5 @@
-import Search from "@/components/shared/Search"
+
 import { getAllVendors } from "@/lib/actions/user.actions"
-import { SearchParamProps } from "@/types"
 import Image from "next/image"
 import { RxSewingPin } from "react-icons/rx";
 import { IUser } from "@/lib/database/models/user.model"
@@ -16,10 +15,7 @@ const fetchItemsByVendor = async ({ organizerId, typeId}: { organizerId: string;
     }
 };
 
-const Vendors = async ({ searchParams }: SearchParamProps) => {
-    const page = Number(searchParams?.page) || 1;
-    // const searchText = (searchParams?.query as string) || '';
-    // const category = (searchParams?.category as string) || '';
+const Vendors = async () => {
     const packetTypeId = "6717aa0a78fed7ee045a8402" // ID of packet type
     const productTypeId = "6717aa0a78fed7ee045a8403" // ID of product type
     const gearTypeId = "6717aa0a78fed7ee045a8401" // ID of gear type
@@ -47,8 +43,6 @@ const Vendors = async ({ searchParams }: SearchParamProps) => {
         <>
             <section className="wrapper my-8 flex flex-col md:gap-12">
                 <div className="flex w-full flex-col gap-5 py-5 md:flex-row">
-                    {/* <Search placeholder="Search"/> */}
-                    {/* <VendorCategoryFilter/> */}
                 </div>
                 {vendorItems.length > 0 ? (
                     <ul className="flex flex-row flex-wrap gap-5 justify-center">
