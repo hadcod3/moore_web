@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 const Checkout = ({ item, buyerId }: { item: IItem, buyerId: string}) => {
     
     const router = useRouter();
+    const outOfStock = item.stock === 0
     async function addToCart() {
         const existingCartItem = await checkItemInCart(buyerId, item._id);
 
@@ -33,7 +34,11 @@ const Checkout = ({ item, buyerId }: { item: IItem, buyerId: string}) => {
         }
     }
 
-    return item.type.name === "product" ? (
+    return outOfStock ? (
+        <Button size="lg" className="button text-red-600">
+            Out Of Stock
+        </Button>
+    ) : item.type.name === "product" ? (
         <form action={addToCart} >
             <Button type="submit" role="link" size="lg" className="button">
                 Add to Cart

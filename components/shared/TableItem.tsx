@@ -22,7 +22,7 @@ const TableItem = async ({ data, model } : TransactionProps) => {
     let itemType = null;
     if ((data as ITransaction).items?._id) {
         const item = await getItemById((data as ITransaction).items._id);
-        itemType = item?.type || "Unknown Type";
+        itemType = item?.type._id || "Unknown Type";
     }
     return (
         <>

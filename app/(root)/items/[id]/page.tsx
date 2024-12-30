@@ -13,6 +13,7 @@ const ItemDetails = async ({ params: { id }, searchParams }: SearchParamProps) =
     const userId = sessionClaims?.userId as string;
     const isOrganizer = userId === item.organizer._id;
     const organizerProfile = await getUserById(item.organizer._id);
+    const outOfStock = item.stock === 0
 
     return (
         <>
@@ -45,7 +46,9 @@ const ItemDetails = async ({ params: { id }, searchParams }: SearchParamProps) =
                                         </p> 
                                         <div className="flex flex-col">
                                             <p className="text-base text-gray-400">Min. Order : {item.minOrder}</p>
-                                            <p className="text-base text-gray-400">Stock : {item.stock}</p>
+                                            <p className={`text-base ${outOfStock ? 'text-red-300' : 'text-gray-400'}`}>
+                                                Stock : {item.stock}   
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

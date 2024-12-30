@@ -11,6 +11,7 @@ import { IUser } from '@/lib/database/models/user.model'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { BsInfoLg } from 'react-icons/bs'
+import reduceItemStock, { updateItem } from '@/lib/actions/item.actions'
 
 interface TransactionModalProps {
     value: ITransaction
@@ -51,6 +52,15 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
             } else if (status === "installation") {
                 notificationMessage = "Your order has arrived! Our team is preparing for installation.";
                 toast.success('Order are being loaded',{position: "bottom-right",});
+                // Update Stock
+                try {
+                    console.log(value.items._id, value.quantity)
+                    const updatedItemStock = await reduceItemStock(value.items._id, value.quantity);
+                    console.log("Updated item:", updatedItemStock);
+                } catch (error) {
+                    console.error("Failed to reduce stock:");
+                }
+
             } else if (status === "success") {
                 notificationMessage = "Your order is complete! Thank you for shopping with us.";
                 toast.success('Order successfully',{position: "bottom-right",});
@@ -108,7 +118,7 @@ const TransactionModal = ({ value, buyer, itemType, currentUser } : TransactionM
                         );
                     }
                     // ID of packet type and ID of gear type
-                    if (itemType === "6717aa0a78fed7ee045a8402" || itemType === "6717aa0a78fed7ee045a8401") {
+                    else if (itemType === "6717aa0a78fed7ee045a8402" || itemType === "6717aa0a78fed7ee045a8401") {
                         return (
                             <div className="w-full">
                                 <Button

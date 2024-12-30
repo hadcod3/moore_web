@@ -237,6 +237,42 @@ export async function deleteItem({ id, path }: DeleteItemParams) {
   }
 }
 
+// REDUCING ITEM STOCK AFTER BEING BOUGHT
+async function reduceItemStock(itemId: string, quantity: number) {
+    try {
+        if (quantity <= 0) {
+            throw new Error("Quantity must be greater than zero.");
+        }
+
+        // Retrieve the item by its ID
+        const item = await Item.findById(itemId);
+
+        if (!item) {
+            throw new Error(`Item with ID ${itemId} not found.`);
+        }
+
+        // Check if there is enough stock
+        if (item.stock < quantity) {
+            throw new Error("Insufficient stock to fulfill the order.");
+        }
+
+        // Reduce the stock by the quantity
+        const newStock = item.stock - quantity;
+
+        // Update the stock in the database
+        item.stock = newStock;
+        await item.save();
+
+        return item;
+    } catch (error) {
+        console.error(`Error reducing stock`);
+        throw error;
+    }
+}
+
+export default reduceItemStock;
+
+
 
 
 type CreateCartParams = {
